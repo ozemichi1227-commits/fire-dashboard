@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>確率予測 - FIRE＿楽天</title>
+<style>
+:root {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+    --muted: #7070a0; --grid: #2a2a40;
+    --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+    --border: rgba(129,140,248,0.15);
+    --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+  --muted: #7070a0; --grid: #2a2a40;
+  --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+  --border: rgba(129,140,248,0.15);
+  --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+}
+:root[data-theme="light"] {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  line-height: 1.6; }
+.header { background: var(--header-bg); color: #fff; padding: 24px 20px 18px; }
+.header h1 { font-size: 20px; font-weight: 700; }
+.header .sub { color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 4px; }
+.nav { display: flex; gap: 4px; padding: 8px 16px; background: var(--surface);
+  border-bottom: 1px solid var(--grid); overflow-x: auto; }
+.nav a { color: var(--ink2); text-decoration: none; font-size: 12px; font-weight: 600;
+  padding: 6px 12px; border-radius: 16px; white-space: nowrap; }
+.nav a:hover, .nav a.active { background: var(--line); color: #fff; }
+.container { max-width: 960px; margin: 0 auto; padding: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; box-shadow: var(--tile-shadow); margin-bottom: 16px; overflow-x: auto; }
+.notice { border-left: 4px solid var(--warn); font-size: 13px; color: var(--ink2); }
+.notice strong { color: var(--ink); }
+h2 { font-size: 14px; font-weight: 650; color: var(--ink2); margin: 20px 0 10px;
+  display: flex; align-items: center; gap: 8px; }
+h2::before { content: ''; width: 4px; height: 16px; border-radius: 2px; background: var(--line); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 720px; }
+th { text-align: right; color: var(--muted); font-weight: 600; padding: 8px;
+  border-bottom: 2px solid var(--grid); font-size: 11px; white-space: nowrap; }
+th:first-child { text-align: left; }
+td { padding: 10px 8px; border-bottom: 1px solid var(--grid); }
+td a { color: var(--ink); font-weight: 600; text-decoration: none; }
+td a:hover { color: var(--line); }
+.code { color: var(--muted); font-size: 11px; }
+.badge { display: inline-block; font-size: 10px; padding: 1px 8px; border-radius: 10px;
+  background: color-mix(in srgb, var(--line) 12%, var(--surface)); color: var(--line); font-weight: 600; }
+.cond { font-size: 10px; color: var(--muted); }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.range { font-size: 12px; color: var(--ink2); }
+.up { color: var(--good); font-weight: 650; }
+.down { color: var(--bad); font-weight: 650; }
+.explain { font-size: 12px; color: var(--muted); }
+.explain dt { font-weight: 650; color: var(--ink2); margin-top: 8px; }
+.foot { color: var(--muted); font-size: 11px; margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid var(--grid); }
+@media (max-width: 600px) { .container { padding: 12px 8px; } }
+</style>
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FIRE楽天">
+</head>
+<body>
+<div class="header">
+  <h1>確率予測（モンテカルロ・シミュレーション）</h1>
+  <div class="sub">各銘柄 5,000 通りの未来を計算 ｜ 更新 2026-07-12 21:53</div>
+</div>
+<nav class="nav">
+  <a href="index.html">ダッシュボード</a>
+  <a href="history.html">シグナル的中履歴</a>
+  <a href="forecast.html" class="active">確率予測</a>
+  <a href="rules.html">売買ルール解説</a>
+  <a href="guide.html">機能ガイド</a>
+</nav>
+<div class="container">
+
+<div class="card notice">
+<strong>これは「未来予知」ではなく「確率の地図」です。</strong><br>
+過去3年の値動きパターンをもとに、各銘柄の未来を 5,000 通りシミュレーションしています。
+「勝てる日を当てる」のではなく「確率的に分の良い賭けを選ぶ」ための道具です。
+過去のパターンが崩れる大事件（暴落・決算サプライズ）は織り込めません。
+</div>
+
+<h2>勝ちやすさランキング（期待値順）</h2>
+<div class="card">
+<table>
+<tr><th>銘柄</th><th>現在値</th><th>20日後レンジ<br>(90%)</th><th>上昇<br>確率</th><th>利確が先<br>+15%</th><th>損切りが先<br>-5%</th><th>期待値<br>/取引</th><th>ケリー<br>投入比率</th></tr>
+<tr>
+<td><a href="stocks/8306.html">三菱UFJ FG</a> <span class="code">8306</span><br>
+<span class="badge">銀行</span> <span class="cond">条件 5/5</span></td>
+<td class="num">3,461</td>
+<td class="num range">3,054 〜 4,170</td>
+<td class="num">67%</td>
+<td class="num up">48%</td>
+<td class="num">44%</td>
+<td class="num up">+5.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8316.html">三井住友FG</a> <span class="code">8316</span><br>
+<span class="badge">銀行</span> <span class="cond">条件 4/5</span></td>
+<td class="num">6,814</td>
+<td class="num range">6,033 〜 8,206</td>
+<td class="num">66%</td>
+<td class="num up">48%</td>
+<td class="num">45%</td>
+<td class="num up">+5.4%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8411.html">みずほFG</a> <span class="code">8411</span><br>
+<span class="badge">銀行</span> <span class="cond">条件 4/5</span></td>
+<td class="num">8,307</td>
+<td class="num range">7,220 〜 10,219</td>
+<td class="num">67%</td>
+<td class="num up">49%</td>
+<td class="num">47%</td>
+<td class="num up">+5.2%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7453.html">良品計画</a> <span class="code">7453</span><br>
+<span class="badge">内需電力</span> <span class="cond">条件 4/5</span></td>
+<td class="num">3,623</td>
+<td class="num range">3,172 〜 4,514</td>
+<td class="num">66%</td>
+<td class="num ">47%</td>
+<td class="num">49%</td>
+<td class="num up">+4.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/1969.html">高砂熱学工業</a> <span class="code">1969</span><br>
+<span class="badge">AIインフラ</span> <span class="cond">条件 2/5</span></td>
+<td class="num">4,795</td>
+<td class="num range">4,210 〜 5,910</td>
+<td class="num">65%</td>
+<td class="num ">46%</td>
+<td class="num">49%</td>
+<td class="num up">+4.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5803.html">フジクラ</a> <span class="code">5803</span><br>
+<span class="badge">AIインフラ</span> <span class="cond">条件 1/5</span></td>
+<td class="num">5,150</td>
+<td class="num range">4,087 〜 7,681</td>
+<td class="num">66%</td>
+<td class="num ">46%</td>
+<td class="num">54%</td>
+<td class="num up">+4.2%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4617.html">中国塗料</a> <span class="code">4617</span><br>
+<span class="badge">防衛造船</span> <span class="cond">条件 4/5</span></td>
+<td class="num">3,535</td>
+<td class="num range">3,022 〜 4,400</td>
+<td class="num">63%</td>
+<td class="num ">44%</td>
+<td class="num">52%</td>
+<td class="num up">+4.2%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5801.html">古河電気工業</a> <span class="code">5801</span><br>
+<span class="badge">AIインフラ</span> <span class="cond">条件 1/5</span></td>
+<td class="num">3,725</td>
+<td class="num range">2,981 〜 5,515</td>
+<td class="num">65%</td>
+<td class="num ">46%</td>
+<td class="num">54%</td>
+<td class="num up">+4.1%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7013.html">IHI</a> <span class="code">7013</span><br>
+<span class="badge">防衛造船</span> <span class="cond">条件 2/5</span></td>
+<td class="num">2,810</td>
+<td class="num range">2,313 〜 3,723</td>
+<td class="num">62%</td>
+<td class="num ">42%</td>
+<td class="num">57%</td>
+<td class="num up">+3.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8031.html">三井物産</a> <span class="code">8031</span><br>
+<span class="badge">大型</span> <span class="cond">条件 1/5</span></td>
+<td class="num">4,556</td>
+<td class="num range">3,958 〜 5,364</td>
+<td class="num">60%</td>
+<td class="num ">37%</td>
+<td class="num">53%</td>
+<td class="num up">+3.4%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7735.html">SCREEN</a> <span class="code">7735</span><br>
+<span class="badge">機械AI</span> <span class="cond">条件 4/5</span></td>
+<td class="num">18,150</td>
+<td class="num range">14,665 〜 24,378</td>
+<td class="num">60%</td>
+<td class="num ">42%</td>
+<td class="num">58%</td>
+<td class="num up">+3.4%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6501.html">日立製作所</a> <span class="code">6501</span><br>
+<span class="badge">大型</span> <span class="cond">条件 1/5</span></td>
+<td class="num">4,700</td>
+<td class="num range">3,955 〜 5,906</td>
+<td class="num">59%</td>
+<td class="num ">40%</td>
+<td class="num">58%</td>
+<td class="num up">+3.2%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4258.html">網屋</a> <span class="code">4258</span><br>
+<span class="badge">新興</span> <span class="cond">条件 4/5</span></td>
+<td class="num">4,380</td>
+<td class="num range">3,383 〜 6,145</td>
+<td class="num">59%</td>
+<td class="num ">40%</td>
+<td class="num">60%</td>
+<td class="num up">+3.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5110.html">住友ゴム工業</a> <span class="code">5110</span><br>
+<span class="badge">増配</span> <span class="cond">条件 4/5</span></td>
+<td class="num">2,214</td>
+<td class="num range">1,908 〜 2,671</td>
+<td class="num">58%</td>
+<td class="num ">36%</td>
+<td class="num">56%</td>
+<td class="num up">+3.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6301.html">コマツ</a> <span class="code">6301</span><br>
+<span class="badge">機械AI</span> <span class="cond">条件 2/5</span></td>
+<td class="num">6,395</td>
+<td class="num range">5,563 〜 7,654</td>
+<td class="num">58%</td>
+<td class="num ">36%</td>
+<td class="num">57%</td>
+<td class="num up">+2.9%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7014.html">名村造船所</a> <span class="code">7014</span><br>
+<span class="badge">防衛造船</span> <span class="cond">条件 2/5</span></td>
+<td class="num">3,800</td>
+<td class="num range">2,834 〜 5,689</td>
+<td class="num">59%</td>
+<td class="num ">39%</td>
+<td class="num">61%</td>
+<td class="num up">+2.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6146.html">ディスコ</a> <span class="code">6146</span><br>
+<span class="badge">機械AI</span> <span class="cond">条件 2/5</span></td>
+<td class="num">72,560</td>
+<td class="num range">57,336 〜 98,569</td>
+<td class="num">58%</td>
+<td class="num ">38%</td>
+<td class="num">62%</td>
+<td class="num up">+2.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6954.html">ファナック</a> <span class="code">6954</span><br>
+<span class="badge">機械AI</span> <span class="cond">条件 3/5</span></td>
+<td class="num">7,156</td>
+<td class="num range">6,051 〜 8,764</td>
+<td class="num">52%</td>
+<td class="num ">34%</td>
+<td class="num">63%</td>
+<td class="num up">+2.1%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9684.html">スクウェア・エニックスHD</a> <span class="code">9684</span><br>
+<span class="badge">エンタメ</span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,572</td>
+<td class="num range">2,215 〜 3,005</td>
+<td class="num">54%</td>
+<td class="num ">29%</td>
+<td class="num">61%</td>
+<td class="num up">+1.8%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/7974.html">任天堂</a> <span class="code">7974</span><br>
+<span class="badge">エンタメ</span> <span class="cond">条件 0/5</span></td>
+<td class="num">7,030</td>
+<td class="num range">5,972 〜 8,295</td>
+<td class="num">52%</td>
+<td class="num ">31%</td>
+<td class="num">64%</td>
+<td class="num up">+1.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9697.html">カプコン</a> <span class="code">9697</span><br>
+<span class="badge">エンタメ</span> <span class="cond">条件 2/5</span></td>
+<td class="num">3,307</td>
+<td class="num range">2,762 〜 3,958</td>
+<td class="num">52%</td>
+<td class="num ">31%</td>
+<td class="num">65%</td>
+<td class="num up">+1.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7203.html">トヨタ自動車</a> <span class="code">7203</span><br>
+<span class="badge">大型</span> <span class="cond">条件 1/5</span></td>
+<td class="num">2,823</td>
+<td class="num range">2,422 〜 3,347</td>
+<td class="num">52%</td>
+<td class="num ">30%</td>
+<td class="num">64%</td>
+<td class="num up">+1.6%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/7270.html">SUBARU</a> <span class="code">7270</span><br>
+<span class="badge">増配</span> <span class="cond">条件 4/5</span></td>
+<td class="num">2,492</td>
+<td class="num range">2,079 〜 2,972</td>
+<td class="num">52%</td>
+<td class="num ">30%</td>
+<td class="num">65%</td>
+<td class="num up">+1.5%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/4417.html">グローバルセキュリティエキスパート</a> <span class="code">4417</span><br>
+<span class="badge">新興</span> <span class="cond">条件 4/5</span></td>
+<td class="num">3,980</td>
+<td class="num range">3,118 〜 5,160</td>
+<td class="num">51%</td>
+<td class="num ">31%</td>
+<td class="num">68%</td>
+<td class="num up">+1.3%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/9501.html">東京電力HD</a> <span class="code">9501</span><br>
+<span class="badge">内需電力</span> <span class="cond">条件 0/5</span></td>
+<td class="num">480</td>
+<td class="num range">382 〜 606</td>
+<td class="num">49%</td>
+<td class="num ">30%</td>
+<td class="num">70%</td>
+<td class="num up">+1.0%</td>
+<td class="num">7%</td>
+</tr><tr>
+<td><a href="stocks/9552.html">M&amp;A総研HD</a> <span class="code">9552</span><br>
+<span class="badge">新興</span> <span class="cond">条件 2/5</span></td>
+<td class="num">844</td>
+<td class="num range">603 〜 1,075</td>
+<td class="num">41%</td>
+<td class="num ">25%</td>
+<td class="num">75%</td>
+<td class="num up">+0.1%</td>
+<td class="num">0%</td>
+</tr>
+</table>
+</div>
+
+<h2>各列の意味</h2>
+<div class="card explain">
+<dl>
+<dt>20日後レンジ（90%）</dt>
+<dd>シミュレーションの90%がこの価格帯に収まった範囲。「だいたいこの間に収まるだろう」という幅。</dd>
+<dt>上昇確率</dt>
+<dd>20営業日後に今より株価が高くなっていたシミュレーションの割合。50%前後が普通で、55%を超えれば上向きの追い風。</dd>
+<dt>利確が先 / 損切りが先</dt>
+<dd>今買ったと仮定して、+15%（利確）と-5%（損切り）のどちらに先に届いたかの割合。残りは60営業日どちらにも届かなかったケース。</dd>
+<dt>期待値/取引</dt>
+<dd>1回の取引で平均的に何%取れる見込みか。<strong>プラスなら「続ければ勝てる賭け」、マイナスなら「やるだけ損な賭け」</strong>。カジノの胴元はこれがプラスだから必ず勝つ。</dd>
+<dt>ケリー投入比率</dt>
+<dd>確率論上「資金の何%まで賭けてよいか」の理論値（10%で頭打ち表示）。これを超えて賭けると、勝率が高くても長期では破産リスクが上がる。現行ルールの1銘柄10%上限はこの考え方に基づく安全設計。</dd>
+</dl>
+</div>
+
+<div class="foot">
+ブートストラップ・モンテカルロ法 ｜ 過去3年の日次リターンから復元抽出 ｜ 5,000パス × 60営業日<br>
+確率は過去の値動きに基づく推定であり、将来の結果を保証しません。投資判断はご自身の責任で行ってください。
+</div>
+</div>
+</body>
+</html>
