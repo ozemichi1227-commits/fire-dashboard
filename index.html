@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FIRE＿楽天 ダッシュボード</title>
+<style>
+
+:root {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0; --axis: #d0d0e0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --chart-fill-top: rgba(79,109,245,0.18); --chart-fill-bot: rgba(79,109,245,0.02);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+  --s0: #1e40af; --s1: #7c3aed; --s2: #0891b2; --s3: #65793e;
+  --s4: #ea580c; --s5: #16a34a; --s6: #ca8a04; --s7: #475569; --s8: #e11d48;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+    --muted: #7070a0; --grid: #2a2a40; --axis: #3a3a55;
+    --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+    --border: rgba(129,140,248,0.15);
+    --chart-fill-top: rgba(129,140,248,0.25); --chart-fill-bot: rgba(129,140,248,0.02);
+    --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+    --s0: #60a5fa; --s1: #a78bfa; --s2: #22d3ee; --s3: #a3b558;
+    --s4: #fb923c; --s5: #4ade80; --s6: #fbbf24; --s7: #94a3b8; --s8: #fb7185;
+  }
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  padding: 0; margin: 0; line-height: 1.5; }
+.header { background: var(--header-bg); color: #fff; padding: 28px 24px 22px;
+  border-radius: 0 0 20px 20px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.header .sub { color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 6px; }
+.container { max-width: 960px; margin: 0 auto; padding: 20px 16px; }
+h2 { font-size: 15px; font-weight: 650; color: var(--ink2); margin: 28px 0 12px;
+  display: flex; align-items: center; gap: 8px; }
+h2::before { content: ""; width: 4px; height: 18px; border-radius: 2px;
+  background: var(--line); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px; margin-top: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; box-shadow: var(--tile-shadow); position: relative; overflow: hidden; }
+.tile::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  border-radius: 4px 0 0 4px; }
+.tile-asset::before { background: var(--line); }
+.tile-pnl::before { background: var(--good); }
+.tile-hold::before { background: var(--warn); }
+.tile-rate::before { background: var(--s1); }
+.tile .label { font-size: 11px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.05em; font-weight: 600; }
+.tile .value { font-size: 24px; font-weight: 700; margin-top: 6px;
+  font-variant-numeric: tabular-nums; }
+.tile .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; overflow-x: auto; box-shadow: var(--tile-shadow); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { text-align: left; color: var(--muted); font-weight: 600; padding: 8px 10px;
+  border-bottom: 2px solid var(--grid); white-space: nowrap; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.04em; }
+td { padding: 10px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--chart-fill-top); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.code { color: var(--muted); font-size: 10px; margin-left: 4px; }
+.stock-name { font-weight: 550; }
+.up { color: var(--good); font-weight: 650; }
+.down { color: var(--bad); font-weight: 650; }
+.flat { color: var(--ink2); }
+.sector { display: inline-block; border-radius: 10px; padding: 1px 8px; font-size: 10px;
+  font-weight: 600; margin-left: 4px; vertical-align: middle; }
+.sector-0 { background: color-mix(in srgb, var(--s0) 18%, transparent); color: var(--s0); }
+.sector-1 { background: color-mix(in srgb, var(--s1) 18%, transparent); color: var(--s1); }
+.sector-2 { background: color-mix(in srgb, var(--s2) 18%, transparent); color: var(--s2); }
+.sector-3 { background: color-mix(in srgb, var(--s3) 18%, transparent); color: var(--s3); }
+.sector-4 { background: color-mix(in srgb, var(--s4) 18%, transparent); color: var(--s4); }
+.sector-5 { background: color-mix(in srgb, var(--s5) 18%, transparent); color: var(--s5); }
+.sector-6 { background: color-mix(in srgb, var(--s6) 18%, transparent); color: var(--s6); }
+.sector-7 { background: color-mix(in srgb, var(--s7) 18%, transparent); color: var(--s7); }
+.sector-8 { background: color-mix(in srgb, var(--s8) 18%, transparent); color: var(--s8); }
+.signal-badge { background: var(--bad); color: #fff; border-radius: 10px;
+  padding: 2px 10px; font-size: 11px; font-weight: 700; }
+.trend-up { color: var(--good); font-weight: 600; font-size: 12px; }
+.trend-down { color: var(--bad); font-weight: 600; font-size: 12px; opacity: 0.7; }
+.trade-buy { color: var(--good); font-weight: 650; }
+.trade-sell { color: var(--bad); font-weight: 650; }
+.rsi-cell { display: flex; align-items: center; gap: 6px; min-width: 80px; }
+.rsi-num { font-size: 12px; font-weight: 600; width: 24px; text-align: right;
+  font-variant-numeric: tabular-nums; }
+.rsi-track { flex: 1; height: 6px; background: var(--grid); border-radius: 3px;
+  overflow: hidden; min-width: 40px; }
+.rsi-fill { height: 100%; border-radius: 3px; }
+.rsi-good { background: var(--line); }
+.rsi-hot { background: var(--bad); }
+.rsi-cold { background: var(--good); }
+.rsi-neutral { background: var(--muted); opacity: 0.5; }
+.sector-summary { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.empty { color: var(--muted); font-size: 13px; padding: 20px 4px; text-align: center; }
+.foot { color: var(--muted); font-size: 11px; margin-top: 28px; padding: 16px;
+  border-top: 1px solid var(--grid); }
+@media (max-width: 600px) {
+  .header { padding: 20px 16px 18px; border-radius: 0 0 16px 16px; }
+  .header h1 { font-size: 18px; }
+  .tiles { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .tile .value { font-size: 20px; }
+  .container { padding: 12px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>FIRE＿楽天 シミュレーション</h1>
+  <div class="sub">更新 2026-07-12 10:30 ｜ 営業日 2026-07-11 ｜ 開始 2026-07-11（仮想資金）</div>
+</div>
+<div class="container">
+
+<div class="tiles">
+  <div class="tile tile-asset"><div class="label">総資産</div>
+    <div class="value">1,000,000<small style="font-size:14px;font-weight:400"> 円</small></div>
+    <div class="note">開始 1,000,000 円</div></div>
+  <div class="tile tile-pnl"><div class="label">累計損益</div>
+    <div class="value"><span class="flat">±0.0%</span></div>
+    <div class="note">+0 円</div></div>
+  <div class="tile tile-hold"><div class="label">保有</div>
+    <div class="value">0<small style="font-size:14px;font-weight:400"> 銘柄</small></div>
+    <div class="note">現金 1,000,000 / 株式 0</div></div>
+  <div class="tile tile-rate"><div class="label">勝率</div>
+    <div class="value">—</div>
+    <div class="note">0 回決済 / 0 勝ち</div></div>
+</div>
+
+<h2>資産推移</h2>
+<div class="card"><div class="empty">資産推移のグラフは、記録が2営業日分たまると表示されます。（現在 1 日分）</div></div>
+
+<h2>保有中（0 銘柄）</h2>
+<div class="card"><div class="empty">保有なし — シグナル待機中</div></div>
+
+<h2>監視銘柄（26）</h2>
+<div class="card">
+<div class="sector-summary"><span class="sector sector-0">銀行 3</span> <span class="sector sector-1">機械AI 4</span> <span class="sector sector-2">AIインフラ 3</span> <span class="sector sector-3">防衛造船 3</span> <span class="sector sector-4">エンタメ 3</span> <span class="sector sector-5">内需電力 2</span> <span class="sector sector-6">増配 2</span> <span class="sector sector-7">大型 3</span> <span class="sector sector-8">新興 3</span></div>
+<table><tr><th>銘柄</th><th class="num">終値</th><th>RSI(14)</th><th>トレンド</th><th>シグナル</th></tr>
+<tr><td><span class="stock-name">三菱UFJ FG</span> <span class="code">8306</span> <span class="sector sector-0">銀行</span></td><td class="num">3,461.0</td><td><div class="rsi-cell"><span class="rsi-num">68</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:68%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td><span class="signal-badge">🔴 買い</span></td></tr><tr><td><span class="stock-name">三井住友FG</span> <span class="code">8316</span> <span class="sector sector-0">銀行</span></td><td class="num">6,814.0</td><td><div class="rsi-cell"><span class="rsi-num">68</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:68%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">みずほFG</span> <span class="code">8411</span> <span class="sector sector-0">銀行</span></td><td class="num">8,307.0</td><td><div class="rsi-cell"><span class="rsi-num">65</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:65%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">ディスコ</span> <span class="code">6146</span> <span class="sector sector-1">機械AI</span></td><td class="num">72,560.0</td><td><div class="rsi-cell"><span class="rsi-num">46</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:46%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">コマツ</span> <span class="code">6301</span> <span class="sector sector-1">機械AI</span></td><td class="num">6,395.0</td><td><div class="rsi-cell"><span class="rsi-num">46</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:46%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">ファナック</span> <span class="code">6954</span> <span class="sector sector-1">機械AI</span></td><td class="num">7,156.0</td><td><div class="rsi-cell"><span class="rsi-num">48</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:48%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">SCREEN</span> <span class="code">7735</span> <span class="sector sector-1">機械AI</span></td><td class="num">18,150.0</td><td><div class="rsi-cell"><span class="rsi-num">61</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:61%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">高砂熱学工業</span> <span class="code">1969</span> <span class="sector sector-2">AIインフラ</span></td><td class="num">4,795.0</td><td><div class="rsi-cell"><span class="rsi-num">46</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:46%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">古河電気工業</span> <span class="code">5801</span> <span class="sector sector-2">AIインフラ</span></td><td class="num">3,725.0</td><td><div class="rsi-cell"><span class="rsi-num">40</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:40%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">フジクラ</span> <span class="code">5803</span> <span class="sector sector-2">AIインフラ</span></td><td class="num">5,150.0</td><td><div class="rsi-cell"><span class="rsi-num">47</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:47%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">中国塗料</span> <span class="code">4617</span> <span class="sector sector-3">防衛造船</span></td><td class="num">3,535.0</td><td><div class="rsi-cell"><span class="rsi-num">54</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:54%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">IHI</span> <span class="code">7013</span> <span class="sector sector-3">防衛造船</span></td><td class="num">2,810.0</td><td><div class="rsi-cell"><span class="rsi-num">51</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:51%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">名村造船所</span> <span class="code">7014</span> <span class="sector sector-3">防衛造船</span></td><td class="num">3,800.0</td><td><div class="rsi-cell"><span class="rsi-num">51</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:51%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">任天堂</span> <span class="code">7974</span> <span class="sector sector-4">エンタメ</span></td><td class="num">7,030.0</td><td><div class="rsi-cell"><span class="rsi-num">47</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:47%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">スクウェア・エニックスHD</span> <span class="code">9684</span> <span class="sector sector-4">エンタメ</span></td><td class="num">2,571.0</td><td><div class="rsi-cell"><span class="rsi-num">58</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:58%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">カプコン</span> <span class="code">9697</span> <span class="sector sector-4">エンタメ</span></td><td class="num">3,307.0</td><td><div class="rsi-cell"><span class="rsi-num">65</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:65%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">良品計画</span> <span class="code">7453</span> <span class="sector sector-5">内需電力</span></td><td class="num">3,623.0</td><td><div class="rsi-cell"><span class="rsi-num">51</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:51%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">東京電力HD</span> <span class="code">9501</span> <span class="sector sector-5">内需電力</span></td><td class="num">480.0</td><td><div class="rsi-cell"><span class="rsi-num">44</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:44%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">住友ゴム工業</span> <span class="code">5110</span> <span class="sector sector-6">増配</span></td><td class="num">2,214.0</td><td><div class="rsi-cell"><span class="rsi-num">56</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:56%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">SUBARU</span> <span class="code">7270</span> <span class="sector sector-6">増配</span></td><td class="num">2,492.0</td><td><div class="rsi-cell"><span class="rsi-num">51</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:51%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">日立製作所</span> <span class="code">6501</span> <span class="sector sector-7">大型</span></td><td class="num">4,700.0</td><td><div class="rsi-cell"><span class="rsi-num">48</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:48%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">トヨタ自動車</span> <span class="code">7203</span> <span class="sector sector-7">大型</span></td><td class="num">2,823.0</td><td><div class="rsi-cell"><span class="rsi-num">48</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:48%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">三井物産</span> <span class="code">8031</span> <span class="sector sector-7">大型</span></td><td class="num">4,556.0</td><td><div class="rsi-cell"><span class="rsi-num">35</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:35%"></div></div></div></td><td><span class="trend-down">↘ 下降</span></td><td></td></tr><tr><td><span class="stock-name">網屋</span> <span class="code">4258</span> <span class="sector sector-8">新興</span></td><td class="num">4,380.0</td><td><div class="rsi-cell"><span class="rsi-num">62</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:62%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">グローバルセキュリティエキスパート</span> <span class="code">4417</span> <span class="sector sector-8">新興</span></td><td class="num">3,980.0</td><td><div class="rsi-cell"><span class="rsi-num">63</span><div class="rsi-track"><div class="rsi-fill rsi-good" style="width:63%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr><tr><td><span class="stock-name">M&amp;A総研HD</span> <span class="code">9552</span> <span class="sector sector-8">新興</span></td><td class="num">844.0</td><td><div class="rsi-cell"><span class="rsi-num">43</span><div class="rsi-track"><div class="rsi-fill rsi-neutral" style="width:43%"></div></div></div></td><td><span class="trend-up">↗ 上昇</span></td><td></td></tr></table>
+</div>
+
+<h2>取引履歴</h2>
+<div class="card"><div class="empty">まだ取引はありません</div></div>
+
+<div class="foot">ルール: GC(25/75) + RSI 50〜70 + 長期線↑ + 終値>短期線 + 出来高≧20日平均 → 買い ／ +15% 利確 ／ -5% 損切り ／ DC手仕舞い</div>
+</div>
+</body>
+</html>
