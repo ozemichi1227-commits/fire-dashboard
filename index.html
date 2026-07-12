@@ -196,16 +196,23 @@ svg { width: 100%; height: auto; display: block; }
   .market-bar { gap: 10px; padding: 10px 12px; }
 }
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FIRE楽天">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}</script>
 </head>
 <body>
 <div class="header">
   <h1>FIRE＿楽天 シミュレーション</h1>
-  <div class="sub">更新 2026-07-12 17:34 ｜ 営業日 2026-07-10 ｜ 開始 2026-07-11（仮想資金）</div>
+  <div class="sub">更新 2026-07-12 19:10 ｜ 営業日 2026-07-10 ｜ 開始 2026-07-11（仮想資金）</div>
 </div>
 <nav class="nav">
   <a href="index.html" class="active">ダッシュボード</a>
   <a href="history.html">シグナル的中履歴</a>
   <a href="rules.html">売買ルール解説</a>
+  <a href="guide.html">機能ガイド</a>
 </nav>
 <div class="container">
 

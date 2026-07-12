@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>機能ガイド - FIRE＿楽天</title>
+<style>
+:root {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+    --muted: #7070a0; --grid: #2a2a40;
+    --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+    --border: rgba(129,140,248,0.15);
+    --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+  --muted: #7070a0; --grid: #2a2a40;
+  --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+  --border: rgba(129,140,248,0.15);
+  --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+}
+:root[data-theme="light"] {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  padding: 0; line-height: 1.8; }
+.header { background: var(--header-bg); color: #fff; padding: 20px 20px 16px; }
+.header a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; }
+.header h1 { font-size: 20px; font-weight: 700; margin-top: 6px; }
+.container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+h2 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 32px 0 12px;
+  padding-left: 12px; border-left: 4px solid var(--line); }
+h2:first-child { margin-top: 0; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; box-shadow: var(--tile-shadow); margin-bottom: 20px; }
+.card-title { font-weight: 700; font-size: 15px; margin-bottom: 12px; color: var(--ink); }
+.feature-list { list-style: none; padding: 0; }
+.feature-list li { padding: 10px 0; border-bottom: 1px solid var(--grid); font-size: 14px; line-height: 1.7; }
+.feature-list li:last-child { border-bottom: none; }
+.feature-icon { margin-right: 6px; }
+.sub-desc { font-size: 12px; color: var(--muted); margin-top: 2px; padding-left: 24px; }
+.stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+.stat { flex: 1; min-width: 100px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px; text-align: center; }
+.stat-value { font-size: 22px; font-weight: 700; color: var(--line); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px;
+  border-radius: 4px; margin-right: 4px; vertical-align: middle; }
+.tag-auto { background: color-mix(in srgb, var(--line) 12%, var(--surface));
+  color: var(--line); border: 1px solid color-mix(in srgb, var(--line) 25%, transparent); }
+.tag-line { background: color-mix(in srgb, var(--good) 12%, var(--surface));
+  color: var(--good); border: 1px solid color-mix(in srgb, var(--good) 25%, transparent); }
+.tag-warn { background: color-mix(in srgb, var(--warn) 12%, var(--surface));
+  color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent); }
+.mtf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.mtf-cell { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.mtf-label { font-weight: 700; font-size: 12px; margin-bottom: 4px; }
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before { content: ''; position: absolute; left: 10px; top: 4px; bottom: 4px;
+  width: 2px; background: var(--grid); }
+.timeline-item { position: relative; padding: 8px 0; font-size: 14px; }
+.timeline-item::before { content: ''; position: absolute; left: -22px; top: 14px;
+  width: 10px; height: 10px; border-radius: 50%; background: var(--line); border: 2px solid var(--surface); }
+.maint-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.maint-table th { text-align: left; font-weight: 600; padding: 8px 10px;
+  border-bottom: 2px solid var(--grid); color: var(--ink); font-size: 12px; }
+.maint-table td { padding: 8px 10px; border-bottom: 1px solid var(--grid); color: var(--ink2); }
+.maint-table tr:last-child td { border-bottom: none; }
+.foot { color: var(--muted); font-size: 11px; margin-top: 28px; padding-top: 16px;
+  border-top: 1px solid var(--grid); }
+@media (max-width: 600px) {
+  .container { padding: 16px 12px; }
+  .stat-row { gap: 8px; }
+  .mtf-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <nav style="display:flex;gap:16px;font-size:13px;flex-wrap:wrap">
+    <a href="index.html" style="color:rgba(255,255,255,0.8);text-decoration:none">ダッシュボード</a>
+    <a href="history.html" style="color:rgba(255,255,255,0.8);text-decoration:none">シグナル的中履歴</a>
+    <a href="rules.html" style="color:rgba(255,255,255,0.8);text-decoration:none">売買ルール</a>
+    <span style="opacity:0.5">機能ガイド</span>
+  </nav>
+  <h1>機能ガイド</h1>
+</div>
+<div class="container">
+
+<!-- 1. システム概要 -->
+<h2>システム概要</h2>
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2);margin-bottom:14px">
+このシステムは、厳選した26銘柄の日本株を毎日自動で監視し、テクニカル分析に基づく売買シグナルをLINEで通知します。自動売買ではなく、<strong>シグナル通知 + 手動発注</strong>の方式です。
+</p>
+<div class="stat-row">
+  <div class="stat"><div class="stat-value">26</div><div class="stat-label">監視銘柄数</div></div>
+  <div class="stat"><div class="stat-value">5</div><div class="stat-label">買い条件の数</div></div>
+  <div class="stat"><div class="stat-value">74%</div><div class="stat-label">過去3年の勝率</div></div>
+  <div class="stat"><div class="stat-value">3:1</div><div class="stat-label">利確:損切り比率</div></div>
+</div>
+<ul class="feature-list" style="margin-top:12px">
+  <li>5つの条件をすべて満たしたときだけ「買い」シグナルを発行</li>
+  <li>利確 +15%、損切り -5% の明確なルールで感情に左右されない売買判断</li>
+  <li>シミュレーション（仮想売買）で成績を自動追跡し、ダッシュボードで可視化</li>
+</ul>
+</div>
+
+<!-- 2. 毎日の自動処理 -->
+<h2>毎日の自動処理</h2>
+
+<div class="card">
+<p style="font-size:13px;color:var(--muted);margin-bottom:14px">毎日 朝8時 と 夕方18時 に以下の処理が自動で実行されます。</p>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <strong>シグナルチェック</strong>
+    <div class="sub-desc">全26銘柄の買い/売りシグナルを検出。該当があればLINEで即時通知。</div>
+  </div>
+  <div class="timeline-item">
+    <strong>シミュレーション更新</strong>
+    <div class="sub-desc">仮想売買の成績（保有銘柄・含み損益・確定損益）を自動記録。</div>
+  </div>
+  <div class="timeline-item">
+    <strong>ダッシュボード更新</strong>
+    <div class="sub-desc">最新データでHTMLを再生成し、GitHub Pagesに自動デプロイ。</div>
+  </div>
+  <div class="timeline-item">
+    <strong>個別銘柄ページ更新</strong>
+    <div class="sub-desc">26銘柄それぞれの詳細分析ページ（チャート・条件チェック等）を再生成。</div>
+  </div>
+  <div class="timeline-item">
+    <strong>適時開示チェック</strong>
+    <div class="sub-desc">決算発表・業績修正などの重要ニュースを検出し、LINEで通知。</div>
+  </div>
+</div>
+</div>
+
+<!-- 3. ダッシュボード機能 -->
+<h2>ダッシュボード機能</h2>
+
+<div class="card">
+<div class="card-title">市場概況・全体指標</div>
+<ul class="feature-list">
+  <li>
+    <span class="feature-icon">📊</span><strong>市場概況バー</strong>
+    <div class="sub-desc">日経平均・TOPIXの日次/週次変化率をヘッダーに常時表示。</div>
+  </li>
+  <li>
+    <span class="feature-icon">🗺</span><strong>セクターヒートマップ</strong>
+    <div class="sub-desc">業種別の週間騰落率を色分けで表示。赤＝上昇、青＝下落で、資金の流れをひと目で把握。</div>
+  </li>
+  <li>
+    <span class="feature-icon">📈</span><strong>資産推移グラフ</strong>
+    <div class="sub-desc">シミュレーション開始からの資産変動チャート。ベンチマーク（日経平均）との比較も可能。</div>
+  </li>
+</ul>
+</div>
+
+<div class="card">
+<div class="card-title">シグナル・銘柄分析</div>
+<ul class="feature-list">
+  <li>
+    <span class="feature-icon">🏆</span><strong>買い時ランキング</strong>
+    <div class="sub-desc">5条件の充足数で全銘柄をソート。上位の銘柄ほどシグナル発生に近い状態。</div>
+  </li>
+  <li>
+    <span class="feature-icon">🔥</span><strong>出来高異常検出</strong>
+    <div class="sub-desc">20日平均の2倍以上の出来高を検知すると🔥マークで表示。大きな値動きの予兆を察知。</div>
+  </li>
+  <li>
+    <span class="feature-icon">📅</span><strong>決算カレンダー</strong>
+    <div class="sub-desc">監視銘柄の次回決算日を表示。7日以内の銘柄は赤色で緊急表示。</div>
+  </li>
+  <li>
+    <span class="feature-icon">💰</span><strong>配当カレンダー</strong>
+    <div class="sub-desc">配当利回りと権利確定日を一覧表示。</div>
+  </li>
+</ul>
+</div>
+
+<div class="card">
+<div class="card-title">リスク管理・取引記録</div>
+<ul class="feature-list">
+  <li>
+    <span class="feature-icon">⚠</span><strong>ドローダウン警告</strong>
+    <div class="sub-desc">資産がピークから -3% で黄色、-5% で赤色の警告バナーを表示。大きな損失を未然に防ぐ。</div>
+  </li>
+  <li>
+    <span class="feature-icon">📋</span><strong>保有銘柄一覧</strong>
+    <div class="sub-desc">現在の含み損益、利確ライン（+15%）、損切りライン（-5%）を銘柄ごとに表示。</div>
+  </li>
+  <li>
+    <span class="feature-icon">📜</span><strong>取引履歴</strong>
+    <div class="sub-desc">過去の売買記録を時系列で一覧。勝敗・損益額・保有日数を確認できる。</div>
+  </li>
+</ul>
+</div>
+
+<!-- 4. 個別銘柄ページ -->
+<h2>個別銘柄ページ（26銘柄）</h2>
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2);margin-bottom:14px">
+各銘柄ごとに専用の分析ページがあり、現在の状態と過去のデータをまとめて確認できます。
+</p>
+<ul class="feature-list">
+  <li>
+    <strong>5条件チェックリスト</strong>
+    <div class="sub-desc">各条件の達成状況と、未達成の条件については「あとどれだけで達成か」の距離を数値で表示。</div>
+  </li>
+  <li>
+    <strong>シグナル接近度バー</strong>
+    <div class="sub-desc">5段階のビジュアルインジケーターで、シグナル発生への近さを直感的に表現。</div>
+  </li>
+  <li>
+    <strong>シグナル確率</strong>
+    <div class="sub-desc">過去の同条件データからの統計的な確率を算出。どの程度シグナルに近いかを定量評価。</div>
+  </li>
+  <li>
+    <strong>3か月チャート</strong>
+    <div class="sub-desc">株価 + SMA25/75 + RSI + 出来高をSVGで描画。外部ツールなしで分析が完結。</div>
+  </li>
+  <li>
+    <strong>トレンド分析</strong>
+    <div class="sub-desc">テクニカル指標から自動生成されるテキスト解説。現在の相場環境を文章で把握。</div>
+  </li>
+</ul>
+</div>
+
+<div class="card">
+<div class="card-title">マルチタイムフレーム分析</div>
+<p style="font-size:13px;color:var(--ink2);margin-bottom:12px">
+日足と週足のトレンドを組み合わせて、4パターンで相場環境を判定します。
+</p>
+<div class="mtf-grid">
+  <div class="mtf-cell" style="border-color:color-mix(in srgb, var(--good) 40%, var(--border))">
+    <div class="mtf-label" style="color:var(--good)">日足 上昇 / 週足 上昇</div>
+    強い買い環境。トレンドが揃っており、シグナルの信頼度が高い。
+  </div>
+  <div class="mtf-cell" style="border-color:color-mix(in srgb, var(--warn) 40%, var(--border))">
+    <div class="mtf-label" style="color:var(--warn)">日足 上昇 / 週足 下降</div>
+    短期的な反発の可能性。長期トレンドに逆行しているため慎重に。
+  </div>
+  <div class="mtf-cell" style="border-color:color-mix(in srgb, var(--line) 40%, var(--border))">
+    <div class="mtf-label" style="color:var(--line)">日足 下降 / 週足 上昇</div>
+    押し目買いの候補。長期トレンドは健在で、短期的な調整局面。
+  </div>
+  <div class="mtf-cell" style="border-color:color-mix(in srgb, var(--bad) 40%, var(--border))">
+    <div class="mtf-label" style="color:var(--bad)">日足 下降 / 週足 下降</div>
+    見送り推奨。両方のタイムフレームが下落トレンド。
+  </div>
+</div>
+</div>
+
+<!-- 5. シグナル的中履歴 -->
+<h2>シグナル的中履歴</h2>
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2);margin-bottom:14px">
+過去3年間に発生した全買いシグナルを追跡し、実際の結果を記録しています。
+</p>
+<ul class="feature-list">
+  <li>
+    <strong>エントリー基準</strong>
+    <div class="sub-desc">シグナル発生の翌営業日始値で買い付けたと仮定して損益を計算。</div>
+  </li>
+  <li>
+    <strong>結果の分類</strong>
+    <div class="sub-desc">
+      <span class="tag tag-line">WIN</span> 利確（+15%到達）
+      <span class="tag tag-warn">LOSS</span> 損切り（-5%到達）
+      <span class="tag tag-auto">DC</span> デッドクロスで手仕舞い
+      <span class="tag" style="background:var(--grid);color:var(--ink2)">OPEN</span> 現在保有中
+    </div>
+  </li>
+  <li>
+    <strong>統計指標</strong>
+    <div class="sub-desc">勝率・平均損益率・平均保有日数をダッシュボード上段に集計表示。</div>
+  </li>
+</ul>
+</div>
+
+<!-- 6. LINE通知 -->
+<h2>LINE通知</h2>
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2);margin-bottom:14px">
+重要なイベントが発生したとき、LINEに自動で通知が届きます。通知のタイプは以下のとおりです。
+</p>
+<ul class="feature-list">
+  <li>
+    <span class="tag tag-line">買い</span>
+    <strong>買いシグナル検出</strong>
+    <div class="sub-desc">5条件すべてを満たした銘柄が見つかったとき。銘柄名・株価・条件の詳細を含む。</div>
+  </li>
+  <li>
+    <span class="tag tag-line">利確</span><span class="tag tag-warn">損切</span>
+    <strong>利確・損切りライン到達</strong>
+    <div class="sub-desc">保有銘柄が +15% または -5% に到達したとき。</div>
+  </li>
+  <li>
+    <span class="tag tag-warn">DC</span>
+    <strong>デッドクロス警告</strong>
+    <div class="sub-desc">保有銘柄でデッドクロスが発生したとき。手仕舞いの判断材料。</div>
+  </li>
+  <li>
+    <span class="tag tag-auto">注目</span>
+    <strong>注目銘柄（4/5条件達成）</strong>
+    <div class="sub-desc">あと1つの条件でシグナル発生という「予備軍」銘柄を通知。事前に心構えができる。</div>
+  </li>
+  <li>
+    <span class="tag tag-warn">出来高</span>
+    <strong>出来高異常の検知</strong>
+    <div class="sub-desc">20日平均の2倍以上の出来高が検出されたとき。大きな値動きの前兆の可能性。</div>
+  </li>
+  <li>
+    <span class="tag tag-auto">開示</span>
+    <strong>適時開示の通知</strong>
+    <div class="sub-desc">決算発表・業績修正などの重要ニュースが監視銘柄に出たとき。</div>
+  </li>
+  <li>
+    <span class="tag tag-auto">週次</span>
+    <strong>週次サマリー</strong>
+    <div class="sub-desc">毎週土曜日に1週間のまとめを自動配信。詳細は次セクションを参照。</div>
+  </li>
+</ul>
+</div>
+
+<!-- 7. 週次サマリー -->
+<h2>週次サマリー（毎週土曜 自動配信）</h2>
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2);margin-bottom:14px">
+毎週土曜日に、その週の振り返りと来週の展望をまとめたレポートがLINEで届きます。
+</p>
+<ul class="feature-list">
+  <li><strong>日経平均の週間騰落率</strong>
+    <div class="sub-desc">市場全体の方向感を確認。</div></li>
+  <li><strong>シミュレーション成績</strong>
+    <div class="sub-desc">週間の確定損益・含み損益の変動。</div></li>
+  <li><strong>保有銘柄の状況</strong>
+    <div class="sub-desc">各銘柄の含み損益率と利確/損切りラインまでの距離。</div></li>
+  <li><strong>今週発生したシグナル一覧</strong>
+    <div class="sub-desc">買い・売りシグナルの発生状況を振り返り。</div></li>
+  <li><strong>来週の注目銘柄</strong>
+    <div class="sub-desc">シグナル接近銘柄（4/5条件達成など）のリストアップ。</div></li>
+  <li><strong>セクターローテーション分析</strong>
+    <div class="sub-desc">業種別の資金の流れ。来週有望なセクターの手がかり。</div></li>
+  <li><strong>今後2週間の決算予定</strong>
+    <div class="sub-desc">監視銘柄の決算日が近い場合に表示。決算前後の値動きに備える。</div></li>
+</ul>
+</div>
+
+<!-- 8. メンテナンス情報 -->
+<h2>メンテナンス情報</h2>
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2);margin-bottom:14px">
+基本的には自動で動き続けますが、外部サービスの変更などにより、まれに手動対応が必要になる場合があります。
+</p>
+<table class="maint-table">
+  <thead>
+    <tr><th>対象</th><th>頻度の目安</th><th>内容</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>yfinance</strong></td>
+      <td>年1-2回</td>
+      <td>Yahoo Finance APIの仕様変更に伴い、ライブラリ更新が必要になる場合がある。</td>
+    </tr>
+    <tr>
+      <td><strong>kabutan.jp</strong></td>
+      <td>不定期</td>
+      <td>HTML構造の変更時に <code>tdnet_monitor.py</code> のスクレイピング部分を修正。</td>
+    </tr>
+    <tr>
+      <td><strong>Python / ライブラリ</strong></td>
+      <td>年1回程度</td>
+      <td>依存パッケージのアップデート推奨。<code>pip install -U -r requirements.txt</code></td>
+    </tr>
+    <tr>
+      <td><strong>監視銘柄の入替</strong></td>
+      <td>任意</td>
+      <td><code>config.json</code> を編集して銘柄を追加・削除可能。</td>
+    </tr>
+    <tr>
+      <td><strong>自動ヘルスチェック</strong></td>
+      <td>常時</td>
+      <td>エラー発生時にLINE通知で検知可能（<code>healthcheck.py</code>）。通知が来たら対応する。</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="foot">
+このガイドはシステムの現在の機能をまとめたものです。機能追加や変更はClaude Codeで随時対応できます。
+</div>
+</div>
+</body>
+</html>
