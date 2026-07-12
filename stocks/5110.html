@@ -110,6 +110,19 @@ td { padding: 8px; }
   color: var(--ink2); line-height: 1.7; }
 .analysis-list li:last-child { border-bottom: none; }
 .analysis-list li::before { content: '▸ '; color: var(--line); font-weight: 700; }
+.mtf-card { border-left: 4px solid var(--muted); }
+.mtf-strong { border-left-color: var(--good); }
+.mtf-caution { border-left-color: var(--warn); }
+.mtf-dip { border-left-color: var(--line); }
+.mtf-weak { border-left-color: var(--bad); }
+.mtf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mtf-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--grid); }
+.mtf-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.mtf-val { font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.mtf-judge { margin-top: 12px; padding: 10px; border-radius: 8px;
+  background: color-mix(in srgb, var(--line) 6%, var(--surface));
+  font-size: 13px; font-weight: 600; text-align: center; }
+@media (max-width: 600px) { .mtf-grid { grid-template-columns: 1fr; } }
 .foot { color: var(--muted); font-size: 11px; margin-top: 20px; padding-top: 16px;
   border-top: 1px solid var(--grid); }
 @media (max-width: 600px) {
@@ -254,7 +267,18 @@ td { padding: 8px; }
 <h2>トレンド分析</h2>
 <div class="card"><ul class="analysis-list"><li>短期・長期線ともに下に位置しており、上昇トレンド継続中。</li><li>RSI 56は好ゾーン（50-70）。勢いあり、かつ過熱なし。</li><li>5条件中4条件達成。残り「出来高 ≧ 20日平均」が整えばシグナル。</li></ul></div>
 
-<div class="foot">更新 2026-07-12 12:56 ｜ 過去実績に基づく確率は将来を保証しません</div>
+<h2>マルチタイムフレーム分析</h2>
+<div class="card mtf-card mtf-caution">
+<div class="mtf-grid">
+  <div class="mtf-row"><span class="mtf-label">日足トレンド</span><span class="mtf-val">📈 上昇</span></div>
+  <div class="mtf-row"><span class="mtf-label">週足トレンド</span><span class="mtf-val">📉 下降</span></div>
+  <div class="mtf-row"><span class="mtf-label">週足RSI</span><span class="mtf-val">59</span></div>
+  <div class="mtf-row"><span class="mtf-label">週足SMA25/75</span><span class="mtf-val">2,194 / —</span></div>
+</div>
+<div class="mtf-judge">⚠️ 日足上昇だが週足下降 — 短期反発の可能性、慎重に</div>
+</div>
+
+<div class="foot">更新 2026-07-12 17:33 ｜ 過去実績に基づく確率は将来を保証しません</div>
 </div>
 </body>
 </html>
