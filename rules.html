@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>売買ルール - FIRE＿楽天</title>
+<style>
+:root {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+    --muted: #7070a0; --grid: #2a2a40;
+    --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+    --border: rgba(129,140,248,0.15);
+    --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+  --muted: #7070a0; --grid: #2a2a40;
+  --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+  --border: rgba(129,140,248,0.15);
+  --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+}
+:root[data-theme="light"] {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  padding: 0; line-height: 1.8; }
+.header { background: var(--header-bg); color: #fff; padding: 20px 20px 16px; }
+.header a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; }
+.header h1 { font-size: 20px; font-weight: 700; margin-top: 6px; }
+.container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+h2 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 32px 0 12px;
+  padding-left: 12px; border-left: 4px solid var(--line); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; box-shadow: var(--tile-shadow); margin-bottom: 20px; }
+.rule-box { border-radius: 10px; padding: 16px 18px; margin: 12px 0; }
+.buy-box { background: color-mix(in srgb, var(--good) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--good) 30%, transparent); }
+.sell-box { background: color-mix(in srgb, var(--bad) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--bad) 30%, transparent); }
+.risk-box { background: color-mix(in srgb, var(--warn) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent); }
+.rule-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+.buy-box .rule-title { color: var(--good); }
+.sell-box .rule-title { color: var(--bad); }
+.risk-box .rule-title { color: var(--warn); }
+.cond-list { list-style: none; padding: 0; }
+.cond-list li { padding: 8px 0; border-bottom: 1px solid var(--grid); font-size: 14px; }
+.cond-list li:last-child { border-bottom: none; }
+.cond-num { display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; background: var(--line);
+  color: #fff; font-size: 11px; font-weight: 700; margin-right: 8px; flex-shrink: 0; }
+.explain { font-size: 12px; color: var(--muted); margin-top: 4px; padding-left: 30px; }
+.diagram { text-align: center; padding: 20px 0; }
+.diagram svg { max-width: 100%; height: auto; }
+.metaphor { background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; font-size: 13px; color: var(--ink2);
+  margin: 16px 0; }
+.metaphor strong { color: var(--ink); }
+.stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+.stat { flex: 1; min-width: 120px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px; text-align: center; }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--line); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.foot { color: var(--muted); font-size: 11px; margin-top: 28px; padding-top: 16px;
+  border-top: 1px solid var(--grid); }
+@media (max-width: 600px) {
+  .container { padding: 16px 12px; }
+  .stat-row { gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html">&larr; ダッシュボードに戻る</a>
+  <h1>売買ルール（わかりやすく解説）</h1>
+</div>
+<div class="container">
+
+<div class="card">
+<p style="font-size:14px;color:var(--ink2)">
+このツールは<strong>「勝率の高いタイミングだけを狙い撃ちする」</strong>ルールで動いています。<br>
+シグナルの頻度は少なめ（月0〜1回）ですが、出たときの信頼度が高い設計です。
+</p>
+<div class="stat-row">
+  <div class="stat"><div class="stat-value">74%</div><div class="stat-label">過去3年の勝率</div></div>
+  <div class="stat"><div class="stat-value">+9.8%</div><div class="stat-label">1取引あたり平均利益</div></div>
+  <div class="stat"><div class="stat-value">月0.6回</div><div class="stat-label">シグナル頻度</div></div>
+</div>
+</div>
+
+<h2>買いのルール（5つ全部揃ったら買う）</h2>
+
+<div class="metaphor">
+<strong>たとえ話:</strong> 「上り坂に入った電車が、十分加速していて、乗客も増えている」ことを5つの数字で確認する。1つでも怪しければ見送り。全部OKなら乗る。
+</div>
+
+<div class="rule-box buy-box">
+<div class="rule-title">5条件AND（すべて満たしたら「買い」）</div>
+<ul class="cond-list">
+  <li><span class="cond-num">1</span><strong>ゴールデンクロス</strong>
+    <div class="explain">25日の平均線が75日の平均線を下から上に突き抜けた瞬間。「短期的な勢いが長期的な流れを上回った」サイン。</div></li>
+  <li><span class="cond-num">2</span><strong>RSI が 50〜70</strong>
+    <div class="explain">「勢いメーター」が50〜70の範囲にある。50未満=まだ弱い、70超=買われすぎで天井が近い。ちょうどいい加速区間だけ狙う。</div></li>
+  <li><span class="cond-num">3</span><strong>75日線そのものが上向き</strong>
+    <div class="explain">長期の流れ自体が上を向いていること。下向きの中でのクロスは「ダマシ」が多いので除外。</div></li>
+  <li><span class="cond-num">4</span><strong>株価が25日線より上</strong>
+    <div class="explain">今の株価が短期平均を上回っている＝ちゃんと上に勢いがある。平均を割っているのに買うのは危険。</div></li>
+  <li><span class="cond-num">5</span><strong>出来高が20日平均以上</strong>
+    <div class="explain">売買が活発＝多くの人が注目している。閑散とした中でのクロスは信頼度が低い。</div></li>
+</ul>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 400 180" width="400">
+  <rect x="0" y="0" width="400" height="180" fill="none"/>
+  <!-- SMA lines -->
+  <path d="M 30 140 Q 100 130 150 110 Q 200 90 250 80 Q 300 75 370 60" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <path d="M 30 120 Q 100 115 150 108 Q 200 100 250 90 Q 300 82 370 70" fill="none" stroke="#4f6df5" stroke-width="2"/>
+  <!-- Cross point -->
+  <circle cx="155" cy="109" r="8" fill="none" stroke="#10b981" stroke-width="2.5"/>
+  <text x="155" y="135" text-anchor="middle" font-size="10" fill="#10b981" font-weight="600">クロス！</text>
+  <!-- Labels -->
+  <text x="375" y="58" font-size="9" fill="#f59e0b" font-weight="600">25日線（短期）</text>
+  <text x="375" y="73" font-size="9" fill="#4f6df5" font-weight="600">75日線（長期）</text>
+  <!-- Arrow -->
+  <path d="M 170 90 L 200 75" fill="none" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/></marker></defs>
+  <text x="210" y="72" font-size="9" fill="#10b981" font-weight="600">ここで買い検討</text>
+</svg>
+</div>
+
+<h2>売りのルール（利益確定・損切り）</h2>
+
+<div class="rule-box sell-box">
+<div class="rule-title">3つのうちどれか1つが来たら売る</div>
+<ul class="cond-list">
+  <li><span class="cond-num" style="background:var(--good)">①</span><strong>+15% 利益確定</strong>
+    <div class="explain">買った値段から15%上がったら、欲張らずに利益を確保。「頭と尻尾はくれてやれ」。</div></li>
+  <li><span class="cond-num" style="background:var(--bad)">②</span><strong>-5% 損切り（絶対厳守）</strong>
+    <div class="explain">5%下がったら機械的に切る。「小さく負けて、大きく勝つ」ための鉄則。感情で判断しない。</div></li>
+  <li><span class="cond-num" style="background:var(--warn)">③</span><strong>デッドクロスで手仕舞い</strong>
+    <div class="explain">25日線が75日線を上から下に割り込んだら、流れが変わったので撤退。利確にも損切りにもならずダラダラ持つのを防ぐ。</div></li>
+</ul>
+</div>
+
+<div class="metaphor">
+<strong>利益:損失の比率 = 3:1</strong>。利確+15%に対して損切り-5%なので、仮に3回に1回しか勝てなくてもトータルはプラスになる設計。実際の勝率74%なら大きくプラス。
+</div>
+
+<h2>リスク管理（大負けしないためのルール）</h2>
+
+<div class="rule-box risk-box">
+<div class="rule-title">どんなにシグナルが出ても守る制限</div>
+<ul class="cond-list">
+  <li><span class="cond-num" style="background:var(--warn)">A</span><strong>1銘柄 = 資金の10%まで</strong>
+    <div class="explain">100万円なら1銘柄10万円まで。1つに集中しない。</div></li>
+  <li><span class="cond-num" style="background:var(--warn)">B</span><strong>同時に持つのは最大5銘柄</strong>
+    <div class="explain">資金の半分は常に現金で待機。チャンスが来た時に動けるように。</div></li>
+  <li><span class="cond-num" style="background:var(--warn)">C</span><strong>1日に買うのは最大2銘柄</strong>
+    <div class="explain">同じ日に大量に買い込まない。分散して入る。</div></li>
+  <li><span class="cond-num" style="background:var(--warn)">D</span><strong>月間-8%で新規買い停止</strong>
+    <div class="explain">その月の損失が8%に達したら、月末まで新たに買わない。相場全体が悪い月に深追いしない。</div></li>
+</ul>
+</div>
+
+<h2>実際の流れ</h2>
+
+<div class="card">
+<ol style="padding-left:20px; font-size:14px;">
+  <li style="margin-bottom:12px"><strong>毎朝8時・夕方18時</strong>に自動チェックが走る</li>
+  <li style="margin-bottom:12px">5条件すべて揃った銘柄があればLINEで通知が届く</li>
+  <li style="margin-bottom:12px"><strong>翌朝の寄り付き</strong>（9:00）で楽天証券アプリから買い注文を出す</li>
+  <li style="margin-bottom:12px">保有中は毎日、利確/損切り/デッドクロスをチェック。該当したらLINEで「売り」通知</li>
+  <li style="margin-bottom:12px">通知が来たら楽天証券アプリで売り注文</li>
+</ol>
+</div>
+
+<h2>注意点</h2>
+
+<div class="card" style="font-size:13px; color:var(--ink2);">
+<ul style="padding-left:18px;">
+  <li>過去3年で勝率74%だが、<strong>将来も同じ成績になる保証はない</strong></li>
+  <li>このツールは「判断」を出すだけ。<strong>注文は自分で出す</strong>（自動売買ではない）</li>
+  <li>まずシミュレーション（仮想資金）で数週間様子を見てから、少額で始める</li>
+  <li>データは前日の終値まで。リアルタイムではない</li>
+</ul>
+</div>
+
+<div class="foot">
+このルールは <code>config.json</code> で数字を変更できます。変えたい場合はClaude Codeに相談してください。
+</div>
+</div>
+</body>
+</html>
