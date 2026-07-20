@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>約定フィデリティ検証 - FIRE＿楽天</title>
+<style>
+:root {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --header-bg: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+    --muted: #7070a0; --grid: #2a2a40;
+    --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+    --border: rgba(129,140,248,0.15);
+    --header-bg: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+  --muted: #7070a0; --grid: #2a2a40;
+  --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+  --border: rgba(129,140,248,0.15);
+  --header-bg: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+  --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+:root[data-theme="light"] {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --header-bg: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  padding: 0; margin: 0; line-height: 1.5; }
+.header { background: var(--header-bg); color: #fff; padding: 28px 24px 22px;
+  border-radius: 0 0 20px 20px; }
+.header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.header .sub { color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 6px; }
+.nav { display: flex; gap: 4px; padding: 8px 16px; background: var(--surface);
+  border-bottom: 1px solid var(--border); overflow-x: auto; }
+.nav a { color: var(--ink2); text-decoration: none; font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 8px; white-space: nowrap; }
+.nav a:hover, .nav a.active { background: var(--line); color: #fff; }
+.container { max-width: 1060px; margin: 0 auto; padding: 20px 16px; }
+h2 { font-size: 15px; font-weight: 650; color: var(--ink2); margin: 28px 0 12px;
+  display: flex; align-items: center; gap: 8px; }
+h2::before { content: ''; width: 4px; height: 18px; border-radius: 2px;
+  background: var(--line); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin-top: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; box-shadow: var(--tile-shadow); position: relative; overflow: hidden; }
+.tile::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  border-radius: 4px 0 0 4px; }
+.tile-main::before { background: var(--line); }
+.tile-good::before { background: var(--good); }
+.tile-bad::before { background: var(--bad); }
+.tile-warn::before { background: var(--warn); }
+.tile-muted::before { background: var(--muted); }
+.tile .label { font-size: 11px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.05em; font-weight: 600; }
+.tile .value { font-size: 24px; font-weight: 700; margin-top: 6px;
+  font-variant-numeric: tabular-nums; }
+.tile .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; overflow-x: auto; box-shadow: var(--tile-shadow); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { text-align: left; color: var(--muted); font-weight: 600; padding: 8px 10px;
+  border-bottom: 2px solid var(--grid); white-space: nowrap; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; user-select: none; }
+th:hover { color: var(--ink2); }
+td { padding: 10px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: color-mix(in srgb, var(--line) 5%, transparent); }
+tr.mismatch td { background: color-mix(in srgb, var(--warn) 10%, transparent); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.code { color: var(--muted); font-size: 10px; margin-left: 4px; }
+.stock-name { font-weight: 550; }
+.up { color: var(--good); font-weight: 650; }
+.down { color: var(--bad); font-weight: 650; }
+.muted-text { color: var(--muted); }
+
+/* sandbox */
+.sandbox { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; box-shadow: var(--tile-shadow); margin-top: 16px; }
+.sandbox h3 { font-size: 14px; font-weight: 650; margin-bottom: 4px; }
+.sandbox .desc { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.sb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.sb-grid label { font-size: 11px; color: var(--muted); font-weight: 600; display: block; margin-bottom: 4px; }
+.sb-grid input, .sb-grid select { width: 100%; border: 1px solid var(--grid); border-radius: 8px;
+  padding: 7px 10px; font-size: 13px; font-family: var(--mono); background: var(--surface); color: var(--ink); }
+.sb-grid input:focus, .sb-grid select:focus { outline: 2px solid color-mix(in srgb, var(--line) 30%, transparent); border-color: var(--line); }
+textarea#bars { width: 100%; border: 1px solid var(--grid); border-radius: 8px;
+  padding: 8px 10px; font-size: 11.5px; font-family: var(--mono); line-height: 1.5;
+  min-height: 100px; resize: vertical; margin-top: 10px; background: var(--surface); color: var(--ink); }
+textarea#bars:focus { outline: 2px solid color-mix(in srgb, var(--line) 30%, transparent); border-color: var(--line); }
+.sb-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.sb-chip { font-size: 11px; font-family: var(--mono); border: 1px solid var(--grid); background: var(--surface);
+  color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.sb-chip:hover { border-color: var(--line); color: var(--line); }
+.sb-btn { background: var(--line); color: #fff; border: none; border-radius: 8px; padding: 8px 18px;
+  font-size: 13px; font-weight: 600; cursor: pointer; }
+.sb-btn:hover { filter: brightness(1.08); }
+.sb-btn.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--grid); }
+.sb-btn.ghost:hover { border-color: var(--line); color: var(--line); }
+.sb-badge { font-family: var(--mono); font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 7px; }
+.sb-b-win { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good); }
+.sb-b-loss { background: color-mix(in srgb, var(--bad) 15%, transparent); color: var(--bad); }
+.sb-b-timeout { background: var(--grid); color: var(--muted); }
+.sb-metrics { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.sb-metrics b { color: var(--ink); font-weight: 640; }
+#sb-out table { font-family: var(--mono); font-size: 11.5px; }
+#sb-out th { font-size: 10px; }
+.sb-hit-tp td { background: color-mix(in srgb, var(--good) 10%, transparent); }
+.sb-hit-sl td { background: color-mix(in srgb, var(--bad) 10%, transparent); }
+.sb-hit-amb td { background: color-mix(in srgb, var(--warn) 10%, transparent); }
+.sb-mk { font-weight: 720; }
+.sb-mk-tp { color: var(--good); } .sb-mk-sl { color: var(--bad); } .sb-mk-amb { color: var(--warn); }
+.sb-warn { background: color-mix(in srgb, var(--warn) 12%, transparent); border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent);
+  color: var(--warn); border-radius: 8px; padding: 10px 12px; font-size: 12px; margin-top: 10px; }
+
+.foot { color: var(--muted); font-size: 11px; margin-top: 28px; padding: 16px;
+  border-top: 1px solid var(--grid); }
+@media (max-width: 600px) {
+  .header { padding: 20px 16px 18px; border-radius: 0 0 16px 16px; }
+  .header h1 { font-size: 18px; }
+  .tiles { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .tile .value { font-size: 20px; }
+  .container { padding: 12px 10px; }
+  table { font-size: 12px; }
+  td, th { padding: 8px 6px; }
+}
+</style>
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FIRE楽天">
+</head>
+<body>
+<div class="header">
+  <h1>約定フィデリティ検証</h1>
+  <div class="sub">記録済みシグナルを日足OHLC経路で再判定 + 対日経225ベンチマーク | 更新 2026-07-20 23:50</div>
+</div>
+<nav class="nav">
+  <a href="index.html">ダッシュボード</a>
+  <a href="history.html">シグナル履歴</a>
+  <a href="fidelity.html" class="active">フィデリティ検証</a>
+  <a href="forecast.html">確率予測</a>
+  <a href="rules.html">売買ルール解説</a>
+  <a href="guide.html">機能ガイド</a>
+</nav>
+<div class="container">
+
+<div class="tiles">
+  <div class="tile tile-main"><div class="label">再判定数</div>
+    <div class="value">22</div>
+    <div class="note">trade_log.json</div></div>
+  <div class="tile tile-good"><div class="label">勝率 (再判定)</div>
+    <div class="value">72.7%</div>
+    <div class="note">16勝 6敗</div></div>
+  <div class="tile tile-good"><div class="label">平均リターン</div>
+    <div class="value"><span class="up">+9.5%</span></div>
+    <div class="note">1トレードあたり</div></div>
+  <div class="tile tile-muted"><div class="label">平均保有</div>
+    <div class="value">14<small style="font-size:14px;font-weight:400"> 日</small></div>
+    <div class="note">エントリーから決済</div></div>
+  <div class="tile tile-good"><div class="label">対日経225 α</div>
+    <div class="value"><span class="up">+5.8%</span></div>
+    <div class="note">指数リターンとの差</div></div>
+  <div class="tile tile-warn"><div class="label">曖昧 / 不一致</div>
+    <div class="value" style="font-size:18px">0 / 0</div>
+    <div class="note">同日両建て / 記録と相違</div></div>
+</div>
+
+<h2>再判定結果</h2>
+<div class="card">
+<table>
+<thead><tr>
+  <th>日付</th><th>銘柄</th><th class="num">エントリー</th>
+  <th>記録結果</th><th class="num">記録日数</th>
+  <th>再判定</th><th class="num">再判定日数</th><th class="num">対指数α</th>
+</tr></thead>
+<tbody>
+<tr><td>2026-06-19</td><td><span class="stock-name">ディスコ</span> <span class="code">6146</span></td><td class="num">87,540.0</td><td><span class="down">損切り -5%</span></td><td class="num">4日</td><td><span class="down">損切り -5.0%</span></td><td class="num">2</td><td class="num"><span class="down">-2.9%</span></td></tr><tr><td>2026-05-12</td><td><span class="stock-name">ファナック</span> <span class="code">6954</span></td><td class="num">7,632.0</td><td><span class="up">利確 +15%</span></td><td class="num">2日</td><td><span class="up">利確 +15.0%</span></td><td class="num">2</td><td class="num"><span class="up">+15.1%</span></td></tr><tr><td>2026-05-11</td><td><span class="stock-name">みずほFG</span> <span class="code">8411</span></td><td class="num">6,871.0</td><td><span class="down">損切り -5%</span></td><td class="num">7日</td><td><span class="down">損切り -5.0%</span></td><td class="num">5</td><td class="num"><span class="down">-2.4%</span></td></tr><tr><td>2026-05-08</td><td><span class="stock-name">三井住友FG</span> <span class="code">8316</span></td><td class="num">5,589.0</td><td><span class="up">利確 +15%</span></td><td class="num">35日</td><td><span class="up">利確 +15.0%</span></td><td class="num">25</td><td class="num"><span class="up">+9.7%</span></td></tr><tr><td>2026-02-10</td><td><span class="stock-name">名村造船所</span> <span class="code">7014</span></td><td class="num">4,708.5</td><td><span class="up">利確 +15%</span></td><td class="num">6日</td><td><span class="up">利確 +15.0%</span></td><td class="num">3</td><td class="num"><span class="up">+16.5%</span></td></tr><tr><td>2026-02-10</td><td><span class="stock-name">良品計画</span> <span class="code">7453</span></td><td class="num">3,292.3</td><td><span class="up">利確 +15%</span></td><td class="num">29日</td><td><span class="up">利確 +15.0%</span></td><td class="num">19</td><td class="num"><span class="up">+19.6%</span></td></tr><tr><td>2026-01-27</td><td><span class="stock-name">コマツ</span> <span class="code">6301</span></td><td class="num">5,483.2</td><td><span class="up">利確 +15%</span></td><td class="num">7日</td><td><span class="up">利確 +15.0%</span></td><td class="num">5</td><td class="num"><span class="up">+12.4%</span></td></tr><tr><td>2025-12-25</td><td><span class="stock-name">SCREEN</span> <span class="code">7735</span></td><td class="num">7,383.6</td><td><span class="up">利確 +15%</span></td><td class="num">21日</td><td><span class="up">利確 +15.0%</span></td><td class="num">11</td><td class="num"><span class="up">+7.7%</span></td></tr><tr><td>2025-09-29</td><td><span class="stock-name">IHI</span> <span class="code">7013</span></td><td class="num">2,530.7</td><td><span class="up">利確 +15%</span></td><td class="num">7日</td><td><span class="up">利確 +15.0%</span></td><td class="num">5</td><td class="num"><span class="up">+8.6%</span></td></tr><tr><td>2025-08-12</td><td><span class="stock-name">トヨタ自動車</span> <span class="code">7203</span></td><td class="num">2,719.1</td><td><span class="up">利確 +15%</span></td><td class="num">76日</td><td><span class="up">利確 +15.0%</span></td><td class="num">51</td><td class="num"><span class="down">-3.2%</span></td></tr><tr><td>2025-08-05</td><td><span class="stock-name">住友ゴム工業</span> <span class="code">5110</span></td><td class="num">1,677.2</td><td><span class="up">利確 +15%</span></td><td class="num">100日</td><td><span class="up">利確 +15.0%</span></td><td class="num">67</td><td class="num"><span class="down">-11.5%</span></td></tr><tr><td>2025-06-04</td><td><span class="stock-name">名村造船所</span> <span class="code">7014</span></td><td class="num">2,181.4</td><td><span class="up">利確 +15%</span></td><td class="num">6日</td><td><span class="up">利確 +15.0%</span></td><td class="num">4</td><td class="num"><span class="up">+13.8%</span></td></tr><tr><td>2025-05-30</td><td><span class="stock-name">SCREEN</span> <span class="code">7735</span></td><td class="num">5,116.6</td><td><span class="up">利確 +15%</span></td><td class="num">28日</td><td><span class="up">利確 +15.0%</span></td><td class="num">20</td><td class="num"><span class="up">+9.2%</span></td></tr><tr><td>2025-05-08</td><td><span class="stock-name">グローバルセキュリティエキスパート</span> <span class="code">4417</span></td><td class="num">2,862.8</td><td><span class="up">利確 +15%</span></td><td class="num">11日</td><td><span class="up">利確 +15.0%</span></td><td class="num">7</td><td class="num"><span class="up">+13.5%</span></td></tr><tr><td>2025-01-14</td><td><span class="stock-name">ファナック</span> <span class="code">6954</span></td><td class="num">4,049.7</td><td><span class="up">利確 +15%</span></td><td class="num">13日</td><td><span class="up">利確 +15.0%</span></td><td class="num">9</td><td class="num"><span class="up">+12.2%</span></td></tr><tr><td>2024-12-12</td><td><span class="stock-name">網屋</span> <span class="code">4258</span></td><td class="num">1,674.1</td><td><span class="up">利確 +15%</span></td><td class="num">25日</td><td><span class="up">利確 +15.0%</span></td><td class="num">13</td><td class="num"><span class="up">+16.4%</span></td></tr><tr><td>2024-09-05</td><td><span class="stock-name">グローバルセキュリティエキスパート</span> <span class="code">4417</span></td><td class="num">3,057.6</td><td><span class="down">損切り -5%</span></td><td class="num">1日</td><td><span class="down">損切り -5.0%</span></td><td class="num">1</td><td class="num"><span class="down">-4.3%</span></td></tr><tr><td>2024-08-21</td><td><span class="stock-name">フジクラ</span> <span class="code">5803</span></td><td class="num">660.0</td><td><span class="down">損切り -5%</span></td><td class="num">5日</td><td><span class="down">損切り -5.0%</span></td><td class="num">3</td><td class="num"><span class="down">-5.4%</span></td></tr><tr><td>2024-06-04</td><td><span class="stock-name">名村造船所</span> <span class="code">7014</span></td><td class="num">2,310.3</td><td><span class="down">損切り -5%</span></td><td class="num">1日</td><td><span class="down">損切り -5.0%</span></td><td class="num">1</td><td class="num"><span class="down">-4.1%</span></td></tr><tr><td>2024-02-01</td><td><span class="stock-name">三井住友FG</span> <span class="code">8316</span></td><td class="num">2,329.4</td><td><span class="up">利確 +15%</span></td><td class="num">34日</td><td><span class="up">利確 +15.0%</span></td><td class="num">22</td><td class="num"><span class="up">+3.7%</span></td></tr><tr><td>2024-01-19</td><td><span class="stock-name">スクウェア・エニックスHD</span> <span class="code">9684</span></td><td class="num">1,858.5</td><td><span class="up">利確 +15%</span></td><td class="num">27日</td><td><span class="up">利確 +15.0%</span></td><td class="num">18</td><td class="num"><span class="up">+8.9%</span></td></tr><tr><td>2023-11-20</td><td><span class="stock-name">名村造船所</span> <span class="code">7014</span></td><td class="num">1,055.8</td><td><span class="down">損切り -5%</span></td><td class="num">8日</td><td><span class="down">損切り -5.0%</span></td><td class="num">5</td><td class="num"><span class="down">-5.1%</span></td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:11px;color:var(--muted);margin-top:8px">
+  * 同日に利確・損切り両方到達 (始値で切り分け不能 → 損切り優先で処理)。
+  黄色背景の行は記録値と再判定が不一致。</p>
+
+<h2>OHLCサンドボックス</h2>
+<div class="sandbox">
+  <h3>手動で1銘柄を再判定</h3>
+  <p class="desc">OHLCを貼り付けて、利確と損切りのどちらが先に成立するかを検証します。</p>
+  <div class="sb-grid">
+    <div><label>エントリー価格</label><input type="number" id="entry" value="1000" step="any"></div>
+    <div><label>利確 % (TP)</label><input type="number" id="tp" value="15" step="any"></div>
+    <div><label>損切り % (SL)</label><input type="number" id="sl" value="5" step="any"></div>
+    <div><label>同日両建て</label>
+      <select id="amb">
+        <option value="sl-first">損切り優先</option>
+        <option value="tp-first">利確優先</option>
+      </select>
+    </div>
+  </div>
+  <textarea id="bars" spellcheck="false" placeholder="日付,始値,高値,安値,終値"></textarea>
+  <div class="sb-row">
+    <span style="font-size:11px;color:var(--muted)">例:</span>
+    <button class="sb-chip" data-ex="tp">利確が先</button>
+    <button class="sb-chip" data-ex="sl">損切りが先</button>
+    <button class="sb-chip" data-ex="amb">同日両方</button>
+    <button class="sb-chip" data-ex="to">未決着</button>
+  </div>
+  <div class="sb-row" style="margin-top:12px">
+    <button class="sb-btn" id="run">再判定する</button>
+    <button class="sb-btn ghost" id="clear">クリア</button>
+  </div>
+  <div id="sb-out"></div>
+</div>
+
+<div class="foot">
+ルール: 利確 +15% / 損切り -5% | 同日曖昧は損切り優先 | エントリー翌営業日から判定<br>
+ベンチマーク: 日経225 (^N225) の同期間リターンとの差 | Yahoo Finance 日足データ<br>
+過去の成績は将来の利益を保証しません。
+</div>
+</div>
+
+<script>
+
+const $=id=>document.getElementById(id);
+function num(s){if(s==null)return null;const t=String(s).replace(/[,\s円]/g,"");if(t===""||t==="-")return null;const v=Number(t);return Number.isFinite(v)?v:null;}
+function parseDate(s){if(!s)return null;let t=String(s).trim().replace(/年|月/g,"/").replace(/日/g,"").replace(/-/g,"/");const m=t.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);if(!m)return null;return m[1]+"-"+String(m[2]).padStart(2,"0")+"-"+String(m[3]).padStart(2,"0");}
+function parseBars(text){const lines=String(text).trim().split(/\r?\n/).filter(l=>l.trim()!=="");if(!lines.length)return[];const delim=lines[0].indexOf("\t")>=0?"\t":",";const rows=lines.map(l=>l.split(delim).map(c=>c.trim()));const idx={date:0,open:1,high:2,low:3,close:4};let start=0;const head=rows[0].join(",");if(/日付|date|始値|open|終値|close/i.test(head)){rows[0].forEach((h,i)=>{if(/日付|date/i.test(h))idx.date=i;else if(/始値|open/i.test(h))idx.open=i;else if(/高値|high/i.test(h))idx.high=i;else if(/安値|low/i.test(h))idx.low=i;else if(/終値|close/i.test(h)&&!/調整/.test(h))idx.close=i;});start=1;}const bars=[];for(let r=start;r<rows.length;r++){const row=rows[r];const date=parseDate(row[idx.date]);if(!date)continue;bars.push({date,open:num(row[idx.open]),high:num(row[idx.high]),low:num(row[idx.low]),close:num(row[idx.close])});}bars.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);return bars;}
+function simulateTrade(bars,opts){const ep=opts.entryPrice;const tp=opts.tp!=null?opts.tp:0.15;const sl=opts.sl!=null?opts.sl:0.05;const off=opts.entryOffset||0;const pol=opts.ambiguityPolicy||"sl-first";if(!ep||!bars||!bars.length)return null;const tpP=ep*(1+tp);const slP=ep*(1-sl);let si=off;const trace=[];let amb=0,hasHL=true;for(let i=si;i<bars.length;i++){const b=bars[i];const held=i-si+1;const hlOk=b.high!=null&&b.low!=null;if(!hlOk)hasHL=false;const hitTP=hlOk?b.high>=tpP:(b.close!=null&&b.close>=tpP);const hitSL=hlOk?b.low<=slP:(b.close!=null&&b.close<=slP);const rec={day:held,date:b.date,open:b.open,high:b.high,low:b.low,close:b.close,mark:""};if(hitTP&&hitSL){let side,byOpen=false;if(b.open!=null&&b.open<=slP){side="loss";byOpen=true;}else if(b.open!=null&&b.open>=tpP){side="win";byOpen=true;}else{side=pol==="tp-first"?"win":"loss";amb++;}rec.mark=byOpen?(side==="win"?"tp":"sl"):"amb";trace.push(rec);const xp=side==="win"?tpP:slP;return{outcome:side,exitPrice:xp,exitDate:b.date,holdDays:held,ret:xp/ep-1,trace,ambiguousDays:amb,ohlcComplete:hasHL};}if(hitTP){rec.mark="tp";trace.push(rec);return{outcome:"win",exitPrice:tpP,exitDate:b.date,holdDays:held,ret:tpP/ep-1,trace,ambiguousDays:amb,ohlcComplete:hasHL};}if(hitSL){rec.mark="sl";trace.push(rec);return{outcome:"loss",exitPrice:slP,exitDate:b.date,holdDays:held,ret:slP/ep-1,trace,ambiguousDays:amb,ohlcComplete:hasHL};}trace.push(rec);}const last=bars[bars.length-1];return{outcome:"timeout",exitPrice:last.close,exitDate:last.date,holdDays:bars.length-si,ret:last.close/ep-1,trace,ambiguousDays:amb,ohlcComplete:hasHL};}
+const EXAMPLES={tp:"日付,始値,高値,安値,終値\n2025-01-06,1005,1040,995,1030\n2025-01-07,1035,1080,1020,1075\n2025-01-08,1080,1160,1070,1155",sl:"日付,始値,高値,安値,終値\n2025-01-06,995,1010,985,1000\n2025-01-07,1000,1030,940,948",amb:"日付,始値,高値,安値,終値\n2025-01-06,1002,1030,990,1015\n2025-01-07,1010,1175,930,1080",to:"日付,始値,高値,安値,終値\n2025-01-06,1000,1080,970,1050\n2025-01-07,1050,1120,1010,1090\n2025-01-08,1090,1140,1000,1035\n2025-01-09,1035,1100,980,1020"};
+document.querySelectorAll("[data-ex]").forEach(b=>b.addEventListener("click",()=>{$("bars").value=EXAMPLES[b.dataset.ex];runSB();}));
+$("clear").addEventListener("click",()=>{$("bars").value="";$("sb-out").innerHTML="";});
+$("run").addEventListener("click",runSB);
+const pctF=x=>(x>=0?"+":"")+(x*100).toFixed(1)+"%";
+const yenF=x=>x==null?"—":Math.round(x).toLocaleString();
+function runSB(){const bars=parseBars($("bars").value);if(!bars.length){$("sb-out").innerHTML='<div class="sb-warn">OHLCを読み取れませんでした。</div>';return;}const r=simulateTrade(bars,{entryPrice:Number($("entry").value),tp:Number($("tp").value)/100,sl:Number($("sl").value)/100,entryOffset:0,ambiguityPolicy:$("amb").value});if(!r){$("sb-out").innerHTML='<div class="sb-warn">エントリー価格を確認してください。</div>';return;}const label=r.outcome==="win"?["利確","sb-b-win"]:r.outcome==="loss"?["損切り","sb-b-loss"]:["未決着","sb-b-timeout"];let warn="";if(!r.ohlcComplete)warn+='<div class="sb-warn">高値・安値が欠けている行があるため終値ベースで代用しました。</div>';if(r.ambiguousDays>0)warn+=`<div class="sb-warn">同日に両ライン到達が ${r.ambiguousDays}日 あり、「${$("amb").selectedOptions[0].text}」で処理。</div>`;const tpL=Number($("entry").value)*(1+Number($("tp").value)/100);const slL=Number($("entry").value)*(1-Number($("sl").value)/100);const trace=r.trace.map(t=>{const cls=t.mark==="tp"?"sb-hit-tp":t.mark==="sl"?"sb-hit-sl":t.mark==="amb"?"sb-hit-amb":"";const mk=t.mark==="tp"?'<span class="sb-mk sb-mk-tp">利確</span>':t.mark==="sl"?'<span class="sb-mk sb-mk-sl">損切り</span>':t.mark==="amb"?'<span class="sb-mk sb-mk-amb">曖昧</span>':"";return`<tr class="${cls}"><td>${t.day}</td><td>${t.date}</td><td>${yenF(t.open)}</td><td>${yenF(t.high)}</td><td>${yenF(t.low)}</td><td>${yenF(t.close)}</td><td>${t.high!=null&&t.high>=tpL?"○":""}</td><td>${t.low!=null&&t.low<=slL?"○":""}</td><td style="text-align:left">${mk}</td></tr>`;}).join("");$("sb-out").innerHTML=`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--grid)"><div style="display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:12px"><span class="sb-badge ${label[1]}">${label[0]}</span><span class="sb-metrics">損益 <b class="${r.ret>=0?"up":"down"}">${pctF(r.ret)}</b> · 手仕舞い <b>${r.exitDate}</b> · 保有 <b>${r.holdDays}日</b> · 決済値 <b>${yenF(r.exitPrice)}</b></span></div>${warn}<div style="overflow-x:auto"><table><thead><tr><th>日</th><th>日付</th><th>始値</th><th>高値</th><th>安値</th><th>終値</th><th>TP</th><th>SL</th><th style="text-align:left">判定</th></tr></thead><tbody>${trace}</tbody></table></div></div>`;}
+
+</script>
+</body>
+</html>
