@@ -88,12 +88,13 @@ td a:hover { color: var(--line); }
 <body>
 <div class="header">
   <h1>確率予測（モンテカルロ・シミュレーション）</h1>
-  <div class="sub">各銘柄 5,000 通りの未来を計算 ｜ 更新 2026-07-12 21:53</div>
+  <div class="sub">各銘柄 5,000 通りの未来を計算 ｜ 更新 2026-07-21 18:03</div>
 </div>
 <nav class="nav">
   <a href="index.html">ダッシュボード</a>
   <a href="history.html">シグナル的中履歴</a>
   <a href="forecast.html" class="active">確率予測</a>
+  <a href="fidelity.html">フィデリティ検証</a>
   <a href="rules.html">売買ルール解説</a>
   <a href="guide.html">機能ガイド</a>
 </nav>
@@ -111,264 +112,994 @@ td a:hover { color: var(--line); }
 <table>
 <tr><th>銘柄</th><th>現在値</th><th>20日後レンジ<br>(90%)</th><th>上昇<br>確率</th><th>利確が先<br>+15%</th><th>損切りが先<br>-5%</th><th>期待値<br>/取引</th><th>ケリー<br>投入比率</th></tr>
 <tr>
+<td><a href="stocks/285A.html">キオクシアHD</a> <span class="code">285A</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">61,060</td>
+<td class="num range">46,854 〜 117,440</td>
+<td class="num">76%</td>
+<td class="num up">52%</td>
+<td class="num">48%</td>
+<td class="num up">+5.3%</td>
+<td class="num">10%</td>
+</tr><tr>
 <td><a href="stocks/8306.html">三菱UFJ FG</a> <span class="code">8306</span><br>
 <span class="badge">銀行</span> <span class="cond">条件 5/5</span></td>
-<td class="num">3,461</td>
-<td class="num range">3,054 〜 4,170</td>
-<td class="num">67%</td>
-<td class="num up">48%</td>
-<td class="num">44%</td>
-<td class="num up">+5.5%</td>
+<td class="num">3,580</td>
+<td class="num range">3,134 〜 4,320</td>
+<td class="num">66%</td>
+<td class="num up">47%</td>
+<td class="num">46%</td>
+<td class="num up">+5.2%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/8316.html">三井住友FG</a> <span class="code">8316</span><br>
-<span class="badge">銀行</span> <span class="cond">条件 4/5</span></td>
-<td class="num">6,814</td>
-<td class="num range">6,033 〜 8,206</td>
-<td class="num">66%</td>
-<td class="num up">48%</td>
-<td class="num">45%</td>
-<td class="num up">+5.4%</td>
+<span class="badge">銀行</span> <span class="cond">条件 5/5</span></td>
+<td class="num">6,951</td>
+<td class="num range">6,115 〜 8,380</td>
+<td class="num">65%</td>
+<td class="num up">47%</td>
+<td class="num">46%</td>
+<td class="num up">+5.1%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/8411.html">みずほFG</a> <span class="code">8411</span><br>
-<span class="badge">銀行</span> <span class="cond">条件 4/5</span></td>
-<td class="num">8,307</td>
-<td class="num range">7,220 〜 10,219</td>
-<td class="num">67%</td>
-<td class="num up">49%</td>
-<td class="num">47%</td>
-<td class="num up">+5.2%</td>
+<span class="badge">銀行</span> <span class="cond">条件 5/5</span></td>
+<td class="num">8,302</td>
+<td class="num range">7,188 〜 10,183</td>
+<td class="num">66%</td>
+<td class="num ">48%</td>
+<td class="num">48%</td>
+<td class="num up">+5.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8750.html">第一生命HD</a> <span class="code">8750</span><br>
+<span class="badge"></span> <span class="cond">条件 5/5</span></td>
+<td class="num">1,878</td>
+<td class="num range">1,645 〜 2,258</td>
+<td class="num">65%</td>
+<td class="num ">45%</td>
+<td class="num">48%</td>
+<td class="num up">+4.7%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/7453.html">良品計画</a> <span class="code">7453</span><br>
 <span class="badge">内需電力</span> <span class="cond">条件 4/5</span></td>
-<td class="num">3,623</td>
-<td class="num range">3,172 〜 4,514</td>
+<td class="num">4,244</td>
+<td class="num range">3,714 〜 5,347</td>
 <td class="num">66%</td>
 <td class="num ">47%</td>
-<td class="num">49%</td>
-<td class="num up">+4.8%</td>
-<td class="num">10%</td>
-</tr><tr>
-<td><a href="stocks/1969.html">高砂熱学工業</a> <span class="code">1969</span><br>
-<span class="badge">AIインフラ</span> <span class="cond">条件 2/5</span></td>
-<td class="num">4,795</td>
-<td class="num range">4,210 〜 5,910</td>
-<td class="num">65%</td>
-<td class="num ">46%</td>
-<td class="num">49%</td>
-<td class="num up">+4.8%</td>
+<td class="num">50%</td>
+<td class="num up">+4.7%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/5803.html">フジクラ</a> <span class="code">5803</span><br>
 <span class="badge">AIインフラ</span> <span class="cond">条件 1/5</span></td>
-<td class="num">5,150</td>
-<td class="num range">4,087 〜 7,681</td>
-<td class="num">66%</td>
-<td class="num ">46%</td>
-<td class="num">54%</td>
-<td class="num up">+4.2%</td>
-<td class="num">10%</td>
-</tr><tr>
-<td><a href="stocks/4617.html">中国塗料</a> <span class="code">4617</span><br>
-<span class="badge">防衛造船</span> <span class="cond">条件 4/5</span></td>
-<td class="num">3,535</td>
-<td class="num range">3,022 〜 4,400</td>
-<td class="num">63%</td>
-<td class="num ">44%</td>
+<td class="num">4,672</td>
+<td class="num range">3,732 〜 6,957</td>
+<td class="num">68%</td>
+<td class="num ">48%</td>
 <td class="num">52%</td>
-<td class="num up">+4.2%</td>
+<td class="num up">+4.7%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/5801.html">古河電気工業</a> <span class="code">5801</span><br>
-<span class="badge">AIインフラ</span> <span class="cond">条件 1/5</span></td>
-<td class="num">3,725</td>
-<td class="num range">2,981 〜 5,515</td>
-<td class="num">65%</td>
+<td><a href="stocks/1969.html">高砂熱学工業</a> <span class="code">1969</span><br>
+<span class="badge">AIインフラ</span> <span class="cond">条件 2/5</span></td>
+<td class="num">4,529</td>
+<td class="num range">3,956 〜 5,584</td>
+<td class="num">64%</td>
 <td class="num ">46%</td>
+<td class="num">50%</td>
+<td class="num up">+4.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7762.html">シチズン時計</a> <span class="code">7762</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">2,238</td>
+<td class="num range">1,981 〜 2,668</td>
+<td class="num">63%</td>
+<td class="num ">42%</td>
+<td class="num">47%</td>
+<td class="num up">+4.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8604.html">野村HD</a> <span class="code">8604</span><br>
+<span class="badge"></span> <span class="cond">条件 5/5</span></td>
+<td class="num">1,586</td>
+<td class="num range">1,369 〜 1,927</td>
+<td class="num">64%</td>
+<td class="num ">45%</td>
+<td class="num">50%</td>
+<td class="num up">+4.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7011.html">三菱重工業</a> <span class="code">7011</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">3,852</td>
+<td class="num range">3,277 〜 5,066</td>
+<td class="num">64%</td>
+<td class="num ">45%</td>
 <td class="num">54%</td>
 <td class="num up">+4.1%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/7013.html">IHI</a> <span class="code">7013</span><br>
-<span class="badge">防衛造船</span> <span class="cond">条件 2/5</span></td>
-<td class="num">2,810</td>
-<td class="num range">2,313 〜 3,723</td>
+<td><a href="stocks/1803.html">清水建設</a> <span class="code">1803</span><br>
+<span class="badge"></span> <span class="cond">条件 0/5</span></td>
+<td class="num">2,464</td>
+<td class="num range">2,123 〜 3,047</td>
+<td class="num">63%</td>
+<td class="num ">43%</td>
+<td class="num">52%</td>
+<td class="num up">+4.1%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5802.html">住友電気工業</a> <span class="code">5802</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">2,336</td>
+<td class="num range">1,940 〜 3,112</td>
+<td class="num">64%</td>
+<td class="num ">45%</td>
+<td class="num">54%</td>
+<td class="num up">+4.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8002.html">丸紅</a> <span class="code">8002</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">5,194</td>
+<td class="num range">4,518 〜 6,198</td>
+<td class="num">61%</td>
+<td class="num ">41%</td>
+<td class="num">52%</td>
+<td class="num up">+4.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4617.html">中国塗料</a> <span class="code">4617</span><br>
+<span class="badge">防衛造船</span> <span class="cond">条件 4/5</span></td>
+<td class="num">3,655</td>
+<td class="num range">3,161 〜 4,558</td>
 <td class="num">62%</td>
-<td class="num ">42%</td>
-<td class="num">57%</td>
+<td class="num ">44%</td>
+<td class="num">54%</td>
+<td class="num up">+4.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9412.html">スカパーJSAT</a> <span class="code">9412</span><br>
+<span class="badge"></span> <span class="cond">条件 0/5</span></td>
+<td class="num">2,285</td>
+<td class="num range">1,924 〜 2,907</td>
+<td class="num">63%</td>
+<td class="num ">44%</td>
+<td class="num">54%</td>
+<td class="num up">+4.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8802.html">三菱地所</a> <span class="code">8802</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,252</td>
+<td class="num range">3,768 〜 5,050</td>
+<td class="num">61%</td>
+<td class="num ">40%</td>
+<td class="num">51%</td>
+<td class="num up">+3.9%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/1861.html">熊谷組</a> <span class="code">1861</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">1,466</td>
+<td class="num range">1,312 〜 1,694</td>
+<td class="num">61%</td>
+<td class="num ">35%</td>
+<td class="num">47%</td>
+<td class="num up">+3.9%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8766.html">東京海上HD</a> <span class="code">8766</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">7,874</td>
+<td class="num range">6,734 〜 9,703</td>
+<td class="num">61%</td>
+<td class="num ">41%</td>
+<td class="num">53%</td>
+<td class="num up">+3.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7013.html">IHI</a> <span class="code">7013</span><br>
+<span class="badge">防衛造船</span> <span class="cond">条件 0/5</span></td>
+<td class="num">2,780</td>
+<td class="num range">2,302 〜 3,701</td>
+<td class="num">63%</td>
+<td class="num ">44%</td>
+<td class="num">56%</td>
+<td class="num up">+3.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5801.html">古河電気工業</a> <span class="code">5801</span><br>
+<span class="badge">AIインフラ</span> <span class="cond">条件 1/5</span></td>
+<td class="num">3,419</td>
+<td class="num range">2,692 〜 5,084</td>
+<td class="num">64%</td>
+<td class="num ">44%</td>
+<td class="num">56%</td>
+<td class="num up">+3.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9983.html">ファーストリテイリング</a> <span class="code">9983</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">80,840</td>
+<td class="num range">71,809 〜 96,172</td>
+<td class="num">61%</td>
+<td class="num ">38%</td>
+<td class="num">51%</td>
+<td class="num up">+3.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8058.html">三菱商事</a> <span class="code">8058</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,664</td>
+<td class="num range">4,130 〜 5,527</td>
+<td class="num">60%</td>
+<td class="num ">38%</td>
+<td class="num">52%</td>
+<td class="num up">+3.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6503.html">三菱電機</a> <span class="code">6503</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">5,591</td>
+<td class="num range">4,837 〜 6,906</td>
+<td class="num">60%</td>
+<td class="num ">41%</td>
+<td class="num">56%</td>
 <td class="num up">+3.5%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/8031.html">三井物産</a> <span class="code">8031</span><br>
-<span class="badge">大型</span> <span class="cond">条件 1/5</span></td>
-<td class="num">4,556</td>
-<td class="num range">3,958 〜 5,364</td>
+<span class="badge">大型</span> <span class="cond">条件 2/5</span></td>
+<td class="num">4,824</td>
+<td class="num range">4,204 〜 5,717</td>
 <td class="num">60%</td>
-<td class="num ">37%</td>
+<td class="num ">38%</td>
+<td class="num">53%</td>
+<td class="num up">+3.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9107.html">川崎汽船</a> <span class="code">9107</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,750</td>
+<td class="num range">2,319 〜 3,388</td>
+<td class="num">60%</td>
+<td class="num ">41%</td>
+<td class="num">56%</td>
+<td class="num up">+3.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8001.html">伊藤忠商事</a> <span class="code">8001</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">1,946</td>
+<td class="num range">1,728 〜 2,256</td>
+<td class="num">59%</td>
+<td class="num ">34%</td>
+<td class="num">50%</td>
+<td class="num up">+3.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6458.html">新晃工業</a> <span class="code">6458</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">1,244</td>
+<td class="num range">1,084 〜 1,475</td>
+<td class="num">59%</td>
+<td class="num ">38%</td>
 <td class="num">53%</td>
 <td class="num up">+3.4%</td>
 <td class="num">10%</td>
 </tr><tr>
+<td><a href="stocks/8035.html">東京エレクトロン</a> <span class="code">8035</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">66,570</td>
+<td class="num range">54,070 〜 87,168</td>
+<td class="num">61%</td>
+<td class="num ">42%</td>
+<td class="num">58%</td>
+<td class="num up">+3.4%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6981.html">村田製作所</a> <span class="code">6981</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">8,001</td>
+<td class="num range">6,628 〜 10,281</td>
+<td class="num">59%</td>
+<td class="num ">41%</td>
+<td class="num">57%</td>
+<td class="num up">+3.4%</td>
+<td class="num">10%</td>
+</tr><tr>
 <td><a href="stocks/7735.html">SCREEN</a> <span class="code">7735</span><br>
-<span class="badge">機械AI</span> <span class="cond">条件 4/5</span></td>
-<td class="num">18,150</td>
-<td class="num range">14,665 〜 24,378</td>
-<td class="num">60%</td>
+<span class="badge">機械AI</span> <span class="cond">条件 3/5</span></td>
+<td class="num">16,980</td>
+<td class="num range">13,700 〜 22,696</td>
+<td class="num">61%</td>
 <td class="num ">42%</td>
 <td class="num">58%</td>
 <td class="num up">+3.4%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/6501.html">日立製作所</a> <span class="code">6501</span><br>
-<span class="badge">大型</span> <span class="cond">条件 1/5</span></td>
-<td class="num">4,700</td>
-<td class="num range">3,955 〜 5,906</td>
-<td class="num">59%</td>
+<span class="badge">大型</span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,792</td>
+<td class="num range">4,072 〜 5,998</td>
+<td class="num">60%</td>
 <td class="num ">40%</td>
-<td class="num">58%</td>
+<td class="num">57%</td>
+<td class="num up">+3.3%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/2802.html">味の素</a> <span class="code">2802</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">5,252</td>
+<td class="num range">4,569 〜 6,254</td>
+<td class="num">59%</td>
+<td class="num ">37%</td>
+<td class="num">54%</td>
+<td class="num up">+3.3%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9101.html">日本郵船</a> <span class="code">9101</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">5,746</td>
+<td class="num range">5,031 〜 6,816</td>
+<td class="num">59%</td>
+<td class="num ">36%</td>
+<td class="num">55%</td>
 <td class="num up">+3.2%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/4258.html">網屋</a> <span class="code">4258</span><br>
-<span class="badge">新興</span> <span class="cond">条件 4/5</span></td>
-<td class="num">4,380</td>
-<td class="num range">3,383 〜 6,145</td>
+<td><a href="stocks/6098.html">リクルートHD</a> <span class="code">6098</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">12,920</td>
+<td class="num range">10,875 〜 16,347</td>
 <td class="num">59%</td>
 <td class="num ">40%</td>
-<td class="num">60%</td>
-<td class="num up">+3.0%</td>
+<td class="num">59%</td>
+<td class="num up">+3.1%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/5110.html">住友ゴム工業</a> <span class="code">5110</span><br>
-<span class="badge">増配</span> <span class="cond">条件 4/5</span></td>
-<td class="num">2,214</td>
-<td class="num range">1,908 〜 2,671</td>
+<td><a href="stocks/4519.html">中外製薬</a> <span class="code">4519</span><br>
+<span class="badge"></span> <span class="cond">条件 1/5</span></td>
+<td class="num">7,397</td>
+<td class="num range">6,251 〜 9,058</td>
+<td class="num">58%</td>
+<td class="num ">38%</td>
+<td class="num">58%</td>
+<td class="num up">+3.1%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6301.html">コマツ</a> <span class="code">6301</span><br>
+<span class="badge">機械AI</span> <span class="cond">条件 1/5</span></td>
+<td class="num">6,418</td>
+<td class="num range">5,573 〜 7,686</td>
 <td class="num">58%</td>
 <td class="num ">36%</td>
 <td class="num">56%</td>
 <td class="num up">+3.0%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/6301.html">コマツ</a> <span class="code">6301</span><br>
-<span class="badge">機械AI</span> <span class="cond">条件 2/5</span></td>
-<td class="num">6,395</td>
-<td class="num range">5,563 〜 7,654</td>
+<td><a href="stocks/7012.html">川崎重工業</a> <span class="code">7012</span><br>
+<span class="badge"></span> <span class="cond">条件 0/5</span></td>
+<td class="num">2,676</td>
+<td class="num range">2,159 〜 3,546</td>
+<td class="num">60%</td>
+<td class="num ">40%</td>
+<td class="num">60%</td>
+<td class="num up">+3.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4063.html">信越化学</a> <span class="code">4063</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">7,205</td>
+<td class="num range">6,202 〜 8,752</td>
 <td class="num">58%</td>
-<td class="num ">36%</td>
-<td class="num">57%</td>
+<td class="num ">37%</td>
+<td class="num">58%</td>
 <td class="num up">+2.9%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/7014.html">名村造船所</a> <span class="code">7014</span><br>
-<span class="badge">防衛造船</span> <span class="cond">条件 2/5</span></td>
-<td class="num">3,800</td>
-<td class="num range">2,834 〜 5,689</td>
+<td><a href="stocks/6383.html">ダイフク</a> <span class="code">6383</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">6,366</td>
+<td class="num range">5,438 〜 7,862</td>
+<td class="num">58%</td>
+<td class="num ">37%</td>
+<td class="num">58%</td>
+<td class="num up">+2.9%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/3231.html">野村不動産HD</a> <span class="code">3231</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">965</td>
+<td class="num range">859 〜 1,107</td>
+<td class="num">58%</td>
+<td class="num ">30%</td>
+<td class="num">52%</td>
+<td class="num up">+2.9%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6857.html">アドバンテスト</a> <span class="code">6857</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">29,630</td>
+<td class="num range">23,294 〜 41,334</td>
+<td class="num">60%</td>
+<td class="num ">39%</td>
+<td class="num">61%</td>
+<td class="num up">+2.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5110.html">住友ゴム工業</a> <span class="code">5110</span><br>
+<span class="badge">増配</span> <span class="cond">条件 4/5</span></td>
+<td class="num">2,261</td>
+<td class="num range">1,948 〜 2,713</td>
+<td class="num">57%</td>
+<td class="num ">36%</td>
+<td class="num">58%</td>
+<td class="num up">+2.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6268.html">ナブテスコ</a> <span class="code">6268</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,907</td>
+<td class="num range">4,072 〜 5,974</td>
+<td class="num">57%</td>
+<td class="num ">37%</td>
 <td class="num">59%</td>
+<td class="num up">+2.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9433.html">KDDI</a> <span class="code">9433</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">2,882</td>
+<td class="num range">2,645 〜 3,204</td>
+<td class="num">58%</td>
+<td class="num ">20%</td>
+<td class="num">44%</td>
+<td class="num up">+2.8%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/4258.html">網屋</a> <span class="code">4258</span><br>
+<span class="badge">新興</span> <span class="cond">条件 4/5</span></td>
+<td class="num">4,310</td>
+<td class="num range">3,336 〜 5,948</td>
+<td class="num">58%</td>
+<td class="num ">39%</td>
+<td class="num">61%</td>
+<td class="num up">+2.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6473.html">ジェイテクト</a> <span class="code">6473</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">2,050</td>
+<td class="num range">1,767 〜 2,437</td>
+<td class="num">58%</td>
+<td class="num ">35%</td>
+<td class="num">58%</td>
+<td class="num up">+2.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/6976.html">太陽誘電</a> <span class="code">6976</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">11,745</td>
+<td class="num range">9,027 〜 16,250</td>
+<td class="num">57%</td>
 <td class="num ">39%</td>
 <td class="num">61%</td>
 <td class="num up">+2.7%</td>
 <td class="num">10%</td>
 </tr><tr>
+<td><a href="stocks/6227.html">AIメカテック</a> <span class="code">6227</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">6,920</td>
+<td class="num range">5,075 〜 10,882</td>
+<td class="num">61%</td>
+<td class="num ">39%</td>
+<td class="num">61%</td>
+<td class="num up">+2.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/8801.html">三井不動産</a> <span class="code">8801</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">1,574</td>
+<td class="num range">1,370 〜 1,850</td>
+<td class="num">57%</td>
+<td class="num ">34%</td>
+<td class="num">57%</td>
+<td class="num up">+2.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4062.html">イビデン</a> <span class="code">4062</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">17,415</td>
+<td class="num range">13,285 〜 24,782</td>
+<td class="num">58%</td>
+<td class="num ">38%</td>
+<td class="num">62%</td>
+<td class="num up">+2.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9104.html">商船三井</a> <span class="code">9104</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">5,670</td>
+<td class="num range">4,949 〜 6,700</td>
+<td class="num">58%</td>
+<td class="num ">33%</td>
+<td class="num">57%</td>
+<td class="num up">+2.7%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4502.html">武田薬品</a> <span class="code">4502</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">5,555</td>
+<td class="num range">5,108 〜 6,135</td>
+<td class="num">58%</td>
+<td class="num ">19%</td>
+<td class="num">42%</td>
+<td class="num up">+2.6%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/6544.html">ジャパンエレベーター</a> <span class="code">6544</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">1,678</td>
+<td class="num range">1,456 〜 2,025</td>
+<td class="num">56%</td>
+<td class="num ">35%</td>
+<td class="num">59%</td>
+<td class="num up">+2.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/3405.html">クラレ</a> <span class="code">3405</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">1,808</td>
+<td class="num range">1,568 〜 2,107</td>
+<td class="num">57%</td>
+<td class="num ">31%</td>
+<td class="num">56%</td>
+<td class="num up">+2.6%</td>
+<td class="num">10%</td>
+</tr><tr>
 <td><a href="stocks/6146.html">ディスコ</a> <span class="code">6146</span><br>
-<span class="badge">機械AI</span> <span class="cond">条件 2/5</span></td>
-<td class="num">72,560</td>
-<td class="num range">57,336 〜 98,569</td>
+<span class="badge">機械AI</span> <span class="cond">条件 3/5</span></td>
+<td class="num">66,840</td>
+<td class="num range">52,496 〜 89,812</td>
 <td class="num">58%</td>
 <td class="num ">38%</td>
 <td class="num">62%</td>
 <td class="num up">+2.6%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/6954.html">ファナック</a> <span class="code">6954</span><br>
-<span class="badge">機械AI</span> <span class="cond">条件 3/5</span></td>
-<td class="num">7,156</td>
-<td class="num range">6,051 〜 8,764</td>
-<td class="num">52%</td>
-<td class="num ">34%</td>
+<td><a href="stocks/8136.html">サンリオ</a> <span class="code">8136</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">1,180</td>
+<td class="num range">966 〜 1,533</td>
+<td class="num">59%</td>
+<td class="num ">38%</td>
+<td class="num">62%</td>
+<td class="num up">+2.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7164.html">全国保証</a> <span class="code">7164</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">3,118</td>
+<td class="num range">2,881 〜 3,418</td>
+<td class="num">58%</td>
+<td class="num ">14%</td>
+<td class="num">38%</td>
+<td class="num up">+2.6%</td>
+<td class="num">3%</td>
+</tr><tr>
+<td><a href="stocks/5108.html">ブリヂストン</a> <span class="code">5108</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">3,778</td>
+<td class="num range">3,417 〜 4,258</td>
+<td class="num">56%</td>
+<td class="num ">24%</td>
+<td class="num">48%</td>
+<td class="num up">+2.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/4204.html">積水化学工業</a> <span class="code">4204</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">2,644</td>
+<td class="num range">2,399 〜 2,983</td>
+<td class="num">56%</td>
+<td class="num ">23%</td>
+<td class="num">48%</td>
+<td class="num up">+2.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7014.html">名村造船所</a> <span class="code">7014</span><br>
+<span class="badge">防衛造船</span> <span class="cond">条件 2/5</span></td>
+<td class="num">3,895</td>
+<td class="num range">2,882 〜 5,853</td>
+<td class="num">59%</td>
+<td class="num ">38%</td>
+<td class="num">62%</td>
+<td class="num up">+2.5%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9503.html">関西電力</a> <span class="code">9503</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,356</td>
+<td class="num range">2,028 〜 2,772</td>
+<td class="num">55%</td>
+<td class="num ">33%</td>
+<td class="num">59%</td>
+<td class="num up">+2.4%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/3436.html">SUMCO</a> <span class="code">3436</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">3,900</td>
+<td class="num range">3,000 〜 5,189</td>
+<td class="num">55%</td>
+<td class="num ">36%</td>
 <td class="num">63%</td>
-<td class="num up">+2.1%</td>
+<td class="num up">+2.3%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9142.html">JR九州</a> <span class="code">9142</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">3,653</td>
+<td class="num range">3,361 〜 4,018</td>
+<td class="num">56%</td>
+<td class="num ">15%</td>
+<td class="num">43%</td>
+<td class="num up">+2.2%</td>
+<td class="num">1%</td>
+</tr><tr>
+<td><a href="stocks/6471.html">日本精工</a> <span class="code">6471</span><br>
+<span class="badge"></span> <span class="cond">条件 0/5</span></td>
+<td class="num">1,118</td>
+<td class="num range">987 〜 1,289</td>
+<td class="num">55%</td>
+<td class="num ">28%</td>
+<td class="num">58%</td>
+<td class="num up">+2.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7203.html">トヨタ自動車</a> <span class="code">7203</span><br>
+<span class="badge">大型</span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,944</td>
+<td class="num range">2,536 〜 3,482</td>
+<td class="num">54%</td>
+<td class="num ">31%</td>
+<td class="num">61%</td>
+<td class="num up">+2.0%</td>
 <td class="num">10%</td>
 </tr><tr>
 <td><a href="stocks/9684.html">スクウェア・エニックスHD</a> <span class="code">9684</span><br>
 <span class="badge">エンタメ</span> <span class="cond">条件 3/5</span></td>
-<td class="num">2,572</td>
-<td class="num range">2,215 〜 3,005</td>
+<td class="num">2,541</td>
+<td class="num range">2,202 〜 2,942</td>
 <td class="num">54%</td>
 <td class="num ">29%</td>
-<td class="num">61%</td>
+<td class="num">59%</td>
+<td class="num up">+2.0%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/2002.html">日清製粉G</a> <span class="code">2002</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,043</td>
+<td class="num range">1,869 〜 2,272</td>
+<td class="num">55%</td>
+<td class="num ">18%</td>
+<td class="num">47%</td>
+<td class="num up">+1.9%</td>
+<td class="num">3%</td>
+</tr><tr>
+<td><a href="stocks/6954.html">ファナック</a> <span class="code">6954</span><br>
+<span class="badge">機械AI</span> <span class="cond">条件 3/5</span></td>
+<td class="num">6,776</td>
+<td class="num range">5,728 〜 8,267</td>
+<td class="num">53%</td>
+<td class="num ">33%</td>
+<td class="num">64%</td>
+<td class="num up">+1.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/9602.html">東宝</a> <span class="code">9602</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">1,435</td>
+<td class="num range">1,265 〜 1,662</td>
+<td class="num">54%</td>
+<td class="num ">27%</td>
+<td class="num">59%</td>
 <td class="num up">+1.8%</td>
 <td class="num">9%</td>
 </tr><tr>
-<td><a href="stocks/7974.html">任天堂</a> <span class="code">7974</span><br>
-<span class="badge">エンタメ</span> <span class="cond">条件 0/5</span></td>
-<td class="num">7,030</td>
-<td class="num range">5,972 〜 8,295</td>
-<td class="num">52%</td>
-<td class="num ">31%</td>
+<td><a href="stocks/9697.html">カプコン</a> <span class="code">9697</span><br>
+<span class="badge">エンタメ</span> <span class="cond">条件 3/5</span></td>
+<td class="num">3,410</td>
+<td class="num range">2,843 〜 4,101</td>
+<td class="num">53%</td>
+<td class="num ">32%</td>
 <td class="num">64%</td>
+<td class="num up">+1.8%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/2181.html">パーソルHD</a> <span class="code">2181</span><br>
+<span class="badge"></span> <span class="cond">条件 5/5</span></td>
+<td class="num">267</td>
+<td class="num range">235 〜 306</td>
+<td class="num">53%</td>
+<td class="num ">26%</td>
+<td class="num">58%</td>
+<td class="num up">+1.8%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/6723.html">ルネサス</a> <span class="code">6723</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,035</td>
+<td class="num range">3,146 〜 5,231</td>
+<td class="num">52%</td>
+<td class="num ">33%</td>
+<td class="num">66%</td>
 <td class="num up">+1.7%</td>
 <td class="num">10%</td>
 </tr><tr>
-<td><a href="stocks/9697.html">カプコン</a> <span class="code">9697</span><br>
-<span class="badge">エンタメ</span> <span class="cond">条件 2/5</span></td>
-<td class="num">3,307</td>
-<td class="num range">2,762 〜 3,958</td>
-<td class="num">52%</td>
-<td class="num ">31%</td>
-<td class="num">65%</td>
-<td class="num up">+1.6%</td>
-<td class="num">10%</td>
-</tr><tr>
-<td><a href="stocks/7203.html">トヨタ自動車</a> <span class="code">7203</span><br>
-<span class="badge">大型</span> <span class="cond">条件 1/5</span></td>
-<td class="num">2,823</td>
-<td class="num range">2,422 〜 3,347</td>
-<td class="num">52%</td>
+<td><a href="stocks/6758.html">ソニーグループ</a> <span class="code">6758</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">3,458</td>
+<td class="num range">3,002 〜 4,100</td>
+<td class="num">54%</td>
 <td class="num ">30%</td>
-<td class="num">64%</td>
+<td class="num">63%</td>
 <td class="num up">+1.6%</td>
-<td class="num">9%</td>
-</tr><tr>
-<td><a href="stocks/7270.html">SUBARU</a> <span class="code">7270</span><br>
-<span class="badge">増配</span> <span class="cond">条件 4/5</span></td>
-<td class="num">2,492</td>
-<td class="num range">2,079 〜 2,972</td>
-<td class="num">52%</td>
-<td class="num ">30%</td>
-<td class="num">65%</td>
-<td class="num up">+1.5%</td>
 <td class="num">9%</td>
 </tr><tr>
 <td><a href="stocks/4417.html">グローバルセキュリティエキスパート</a> <span class="code">4417</span><br>
-<span class="badge">新興</span> <span class="cond">条件 4/5</span></td>
-<td class="num">3,980</td>
-<td class="num range">3,118 〜 5,160</td>
-<td class="num">51%</td>
+<span class="badge">新興</span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,450</td>
+<td class="num range">3,484 〜 5,810</td>
+<td class="num">53%</td>
+<td class="num ">33%</td>
+<td class="num">67%</td>
+<td class="num up">+1.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/5401.html">日本製鉄</a> <span class="code">5401</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">599</td>
+<td class="num range">533 〜 678</td>
+<td class="num">53%</td>
+<td class="num ">23%</td>
+<td class="num">57%</td>
+<td class="num up">+1.6%</td>
+<td class="num">5%</td>
+</tr><tr>
+<td><a href="stocks/4503.html">アステラス製薬</a> <span class="code">4503</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,196</td>
+<td class="num range">1,957 〜 2,508</td>
+<td class="num">53%</td>
+<td class="num ">24%</td>
+<td class="num">58%</td>
+<td class="num up">+1.6%</td>
+<td class="num">6%</td>
+</tr><tr>
+<td><a href="stocks/4385.html">メルカリ</a> <span class="code">4385</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">4,567</td>
+<td class="num range">3,706 〜 5,835</td>
+<td class="num">53%</td>
+<td class="num ">32%</td>
+<td class="num">67%</td>
+<td class="num up">+1.6%</td>
+<td class="num">10%</td>
+</tr><tr>
+<td><a href="stocks/7270.html">SUBARU</a> <span class="code">7270</span><br>
+<span class="badge">増配</span> <span class="cond">条件 5/5</span></td>
+<td class="num">2,591</td>
+<td class="num range">2,158 〜 3,094</td>
+<td class="num">52%</td>
 <td class="num ">31%</td>
-<td class="num">68%</td>
-<td class="num up">+1.3%</td>
+<td class="num">65%</td>
+<td class="num up">+1.6%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/4183.html">三井化学</a> <span class="code">4183</span><br>
+<span class="badge"></span> <span class="cond">条件 5/5</span></td>
+<td class="num">2,151</td>
+<td class="num range">1,871 〜 2,505</td>
+<td class="num">52%</td>
+<td class="num ">28%</td>
+<td class="num">62%</td>
+<td class="num up">+1.5%</td>
 <td class="num">8%</td>
 </tr><tr>
-<td><a href="stocks/9501.html">東京電力HD</a> <span class="code">9501</span><br>
-<span class="badge">内需電力</span> <span class="cond">条件 0/5</span></td>
-<td class="num">480</td>
-<td class="num range">382 〜 606</td>
-<td class="num">49%</td>
+<td><a href="stocks/6584.html">三櫻工業</a> <span class="code">6584</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">828</td>
+<td class="num range">673 〜 1,012</td>
+<td class="num">52%</td>
+<td class="num ">31%</td>
+<td class="num">66%</td>
+<td class="num up">+1.5%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/7974.html">任天堂</a> <span class="code">7974</span><br>
+<span class="badge">エンタメ</span> <span class="cond">条件 1/5</span></td>
+<td class="num">6,993</td>
+<td class="num range">5,870 〜 8,272</td>
+<td class="num">52%</td>
+<td class="num ">29%</td>
+<td class="num">65%</td>
+<td class="num up">+1.5%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/9468.html">KADOKAWA</a> <span class="code">9468</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">3,638</td>
+<td class="num range">3,006 〜 4,391</td>
+<td class="num">51%</td>
 <td class="num ">30%</td>
+<td class="num">66%</td>
+<td class="num up">+1.4%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/9166.html">GENDA</a> <span class="code">9166</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">582</td>
+<td class="num range">427 〜 800</td>
+<td class="num">50%</td>
+<td class="num ">32%</td>
+<td class="num">68%</td>
+<td class="num up">+1.4%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/6526.html">ソシオネクスト</a> <span class="code">6526</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">2,472</td>
+<td class="num range">1,835 〜 3,318</td>
+<td class="num">49%</td>
+<td class="num ">32%</td>
+<td class="num">68%</td>
+<td class="num up">+1.3%</td>
+<td class="num">9%</td>
+</tr><tr>
+<td><a href="stocks/9501.html">東京電力HD</a> <span class="code">9501</span><br>
+<span class="badge">内需電力</span> <span class="cond">条件 2/5</span></td>
+<td class="num">503</td>
+<td class="num range">399 〜 631</td>
+<td class="num">50%</td>
+<td class="num ">31%</td>
+<td class="num">69%</td>
+<td class="num up">+1.2%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/6506.html">安川電機</a> <span class="code">6506</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">5,119</td>
+<td class="num range">4,038 〜 6,393</td>
+<td class="num">48%</td>
+<td class="num ">31%</td>
+<td class="num">69%</td>
+<td class="num up">+1.2%</td>
+<td class="num">8%</td>
+</tr><tr>
+<td><a href="stocks/3116.html">トヨタ紡織</a> <span class="code">3116</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,264</td>
+<td class="num range">1,975 〜 2,568</td>
+<td class="num">51%</td>
+<td class="num ">23%</td>
+<td class="num">61%</td>
+<td class="num up">+1.2%</td>
+<td class="num">3%</td>
+</tr><tr>
+<td><a href="stocks/9005.html">東急</a> <span class="code">9005</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">1,764</td>
+<td class="num range">1,609 〜 1,932</td>
+<td class="num">52%</td>
+<td class="num ">13%</td>
+<td class="num">50%</td>
+<td class="num up">+1.1%</td>
+<td class="num">0%</td>
+</tr><tr>
+<td><a href="stocks/4543.html">テルモ</a> <span class="code">4543</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">2,240</td>
+<td class="num range">1,941 〜 2,623</td>
+<td class="num">51%</td>
+<td class="num ">25%</td>
+<td class="num">64%</td>
+<td class="num up">+1.1%</td>
+<td class="num">4%</td>
+</tr><tr>
+<td><a href="stocks/5253.html">カバー</a> <span class="code">5253</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">1,633</td>
+<td class="num range">1,228 〜 2,100</td>
+<td class="num">47%</td>
+<td class="num ">29%</td>
+<td class="num">71%</td>
+<td class="num up">+0.8%</td>
+<td class="num">5%</td>
+</tr><tr>
+<td><a href="stocks/3923.html">ラクス</a> <span class="code">3923</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">1,011</td>
+<td class="num range">824 〜 1,231</td>
+<td class="num">48%</td>
+<td class="num ">28%</td>
 <td class="num">70%</td>
-<td class="num up">+1.0%</td>
-<td class="num">7%</td>
+<td class="num up">+0.8%</td>
+<td class="num">5%</td>
+</tr><tr>
+<td><a href="stocks/6367.html">ダイキン工業</a> <span class="code">6367</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">24,520</td>
+<td class="num range">20,820 〜 28,450</td>
+<td class="num">49%</td>
+<td class="num ">25%</td>
+<td class="num">67%</td>
+<td class="num up">+0.7%</td>
+<td class="num">3%</td>
+</tr><tr>
+<td><a href="stocks/9432.html">NTT</a> <span class="code">9432</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">152</td>
+<td class="num range">141 〜 163</td>
+<td class="num">51%</td>
+<td class="num ">6%</td>
+<td class="num">46%</td>
+<td class="num up">+0.5%</td>
+<td class="num">0%</td>
+</tr><tr>
+<td><a href="stocks/3697.html">SHIFT</a> <span class="code">3697</span><br>
+<span class="badge"></span> <span class="cond">条件 4/5</span></td>
+<td class="num">766</td>
+<td class="num range">567 〜 969</td>
+<td class="num">43%</td>
+<td class="num ">27%</td>
+<td class="num">73%</td>
+<td class="num up">+0.4%</td>
+<td class="num">3%</td>
+</tr><tr>
+<td><a href="stocks/4568.html">第一三共</a> <span class="code">4568</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">2,815</td>
+<td class="num range">2,343 〜 3,319</td>
+<td class="num">46%</td>
+<td class="num ">25%</td>
+<td class="num">71%</td>
+<td class="num up">+0.4%</td>
+<td class="num">1%</td>
+</tr><tr>
+<td><a href="stocks/9843.html">ニトリHD</a> <span class="code">9843</span><br>
+<span class="badge"></span> <span class="cond">条件 2/5</span></td>
+<td class="num">2,460</td>
+<td class="num range">2,082 〜 2,840</td>
+<td class="num">47%</td>
+<td class="num ">23%</td>
+<td class="num">70%</td>
+<td class="num up">+0.3%</td>
+<td class="num">0%</td>
 </tr><tr>
 <td><a href="stocks/9552.html">M&amp;A総研HD</a> <span class="code">9552</span><br>
 <span class="badge">新興</span> <span class="cond">条件 2/5</span></td>
-<td class="num">844</td>
-<td class="num range">603 〜 1,075</td>
+<td class="num">862</td>
+<td class="num range">614 〜 1,092</td>
 <td class="num">41%</td>
-<td class="num ">25%</td>
-<td class="num">75%</td>
-<td class="num up">+0.1%</td>
+<td class="num ">24%</td>
+<td class="num">76%</td>
+<td class="num down">-0.2%</td>
+<td class="num">0%</td>
+</tr><tr>
+<td><a href="stocks/4523.html">エーザイ</a> <span class="code">4523</span><br>
+<span class="badge"></span> <span class="cond">条件 3/5</span></td>
+<td class="num">4,482</td>
+<td class="num range">3,835 〜 5,054</td>
+<td class="num">44%</td>
+<td class="num ">17%</td>
+<td class="num">72%</td>
+<td class="num down">-0.5%</td>
 <td class="num">0%</td>
 </tr>
 </table>

@@ -1,9 +1,13 @@
-const CACHE_NAME = 'fire-dashboard-v1';
+const CACHE_NAME = 'fire-dashboard-v3';
 const CACHE_URLS = [
   './',
   'index.html',
   'history.html',
-  'rules.html'
+  'forecast.html',
+  'fidelity.html',
+  'research.html',
+  'rules.html',
+  'guide.html'
 ];
 
 self.addEventListener('install', event => {
