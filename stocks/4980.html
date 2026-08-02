@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>デクセリアルズ (4980) - FIRE＿楽天</title>
+<style>
+:root {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0; --axis: #d0d0e0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+    --muted: #7070a0; --grid: #2a2a40; --axis: #3a3a55;
+    --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+    --border: rgba(129,140,248,0.15);
+    --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0f0f1a; --surface: #1a1a2e; --ink: #f0f0ff; --ink2: #b0b0cc;
+  --muted: #7070a0; --grid: #2a2a40; --axis: #3a3a55;
+  --line: #818cf8; --good: #34d399; --bad: #f87171; --warn: #fbbf24;
+  --border: rgba(129,140,248,0.15);
+  --tile-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --header-bg: linear-gradient(135deg, #312e81 0%, #581c87 100%);
+}
+:root[data-theme="light"] {
+  --page: #f7f8fa; --surface: #ffffff; --ink: #1a1a2e; --ink2: #4a4a6a;
+  --muted: #8888a0; --grid: #e8e8f0; --axis: #d0d0e0;
+  --line: #4f6df5; --good: #10b981; --bad: #ef4444; --warn: #f59e0b;
+  --border: rgba(79,109,245,0.12);
+  --tile-shadow: 0 2px 8px rgba(79,109,245,0.08);
+  --header-bg: linear-gradient(135deg, #4f6df5 0%, #7c3aed 100%);
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  padding: 0; margin: 0; line-height: 1.6; }
+.header { background: var(--header-bg); color: #fff; padding: 20px 20px 16px; }
+.header a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; }
+.header a:hover { color: #fff; }
+.header h1 { font-size: 20px; font-weight: 700; margin-top: 6px; }
+.header .meta { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 4px; }
+.container { max-width: 900px; margin: 0 auto; padding: 16px; }
+h2 { font-size: 14px; font-weight: 650; color: var(--ink2); margin: 24px 0 10px;
+  display: flex; align-items: center; gap: 8px; }
+h2::before { content: ''; width: 4px; height: 16px; border-radius: 2px; background: var(--line); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; box-shadow: var(--tile-shadow); margin-bottom: 16px; overflow-x: auto; }
+svg { width: 100%; height: auto; display: block; }
+.grid { stroke: var(--grid); stroke-width: 0.5; }
+.tick { fill: var(--muted); font-size: 10px; }
+.section-label { fill: var(--muted); font-size: 10px; font-weight: 600; }
+.price-line { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linejoin: round; }
+.sma-short { fill: none; stroke: var(--warn); stroke-width: 1.2; stroke-dasharray: none; opacity: 0.9; }
+.sma-long { fill: none; stroke: var(--line); stroke-width: 1.2; opacity: 0.9; }
+.rsi-zone { fill: var(--line); opacity: 0.08; }
+.rsi-line { fill: none; stroke: #a855f7; stroke-width: 1.5; }
+.vol-normal { fill: var(--grid); }
+.vol-high { fill: var(--line); opacity: 0.6; }
+.legend { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+.legend span { display: flex; align-items: center; gap: 4px; }
+.legend .dot-price { width: 10px; height: 3px; background: var(--ink); border-radius: 2px; }
+.legend .dot-sma25 { width: 10px; height: 3px; background: var(--warn); border-radius: 2px; }
+.legend .dot-sma75 { width: 10px; height: 3px; background: var(--line); border-radius: 2px; }
+.legend .dot-rsi { width: 10px; height: 3px; background: #a855f7; border-radius: 2px; }
+.score-bar { margin: 16px 0; }
+.score-header { display: flex; justify-content: space-between; align-items: baseline; }
+.score-label { font-size: 13px; font-weight: 600; }
+.score-value { font-size: 28px; font-weight: 700; }
+.score-track { height: 10px; background: var(--grid); border-radius: 5px; margin-top: 8px; overflow: hidden; }
+.score-fill { height: 100%; border-radius: 5px; transition: width 0.3s; }
+.score-fire .score-fill { background: var(--bad); }
+.score-hot .score-fill { background: var(--warn); }
+.score-warm .score-fill { background: var(--line); }
+.score-cold .score-fill { background: var(--muted); }
+.score-status { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.cond-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--grid); }
+.cond-item:last-child { border-bottom: none; }
+.cond-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.cond-name { font-weight: 600; font-size: 13px; }
+.cond-detail { font-size: 12px; color: var(--ink2); margin-top: 2px; }
+.cond-dist { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.cond-met .cond-name { color: var(--good); }
+.cond-unmet .cond-name { color: var(--bad); }
+.prob-card { background: linear-gradient(135deg, rgba(79,109,245,0.08), rgba(124,58,237,0.08));
+  border-radius: 12px; padding: 20px; text-align: center; margin: 16px 0; }
+.prob-title { font-size: 12px; color: var(--muted); font-weight: 600; }
+.prob-value { font-size: 42px; font-weight: 800; color: var(--line); margin: 8px 0; }
+.prob-note { font-size: 11px; color: var(--muted); }
+.hold-card { background: color-mix(in srgb, var(--warn) 8%, var(--surface));
+  border: 1px solid var(--warn); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.hold-title { font-size: 12px; font-weight: 700; color: var(--warn); margin-bottom: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { text-align: left; color: var(--muted); font-weight: 600; padding: 6px 8px;
+  border-bottom: 1px solid var(--grid); font-size: 11px; }
+td { padding: 8px; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.up { color: var(--good); font-weight: 650; }
+.down { color: var(--bad); font-weight: 650; }
+.analysis-list { list-style: none; padding: 0; }
+.analysis-list li { padding: 8px 0; border-bottom: 1px solid var(--grid); font-size: 13px;
+  color: var(--ink2); line-height: 1.7; }
+.analysis-list li:last-child { border-bottom: none; }
+.analysis-list li::before { content: '▸ '; color: var(--line); font-weight: 700; }
+.mtf-card { border-left: 4px solid var(--muted); }
+.mtf-strong { border-left-color: var(--good); }
+.mtf-caution { border-left-color: var(--warn); }
+.mtf-dip { border-left-color: var(--line); }
+.mtf-weak { border-left-color: var(--bad); }
+.mtf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mtf-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--grid); }
+.mtf-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.mtf-val { font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.mtf-judge { margin-top: 12px; padding: 10px; border-radius: 8px;
+  background: color-mix(in srgb, var(--line) 6%, var(--surface));
+  font-size: 13px; font-weight: 600; text-align: center; }
+@media (max-width: 600px) { .mtf-grid { grid-template-columns: 1fr; } }
+.foot { color: var(--muted); font-size: 11px; margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid var(--grid); }
+@media (max-width: 600px) {
+  .header { padding: 16px 14px 12px; }
+  .container { padding: 12px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="../index.html">← ダッシュボードに戻る</a>
+  <h1>デクセリアルズ <span style="opacity:0.7;font-size:14px">4980.T</span></h1>
+  <div class="meta"> ｜ 終値 3,304 円 ｜ 2026-07-31</div>
+</div>
+<div class="container">
+
+
+
+<h2>シグナル接近度</h2>
+<div class="card">
+<div class="score-bar score-warm">
+  <div class="score-header">
+    <span class="score-label">5条件チェック</span>
+    <span class="score-value">3/5</span>
+  </div>
+  <div class="score-track"><div class="score-fill" style="width:60.0%"></div></div>
+  <div class="score-status">接近中</div>
+</div>
+</div>
+
+<div class="prob-card">
+<div class="prob-title">1週間以内にシグナルが出る確率（過去実績）</div>
+<div class="prob-value">0%</div>
+<div class="prob-note">過去に3/5条件達成時、5営業日以内にシグナル発動した頻度（サンプル 38 回）</div>
+</div>
+
+<h2>条件チェックリスト</h2>
+<div class="card"><div class="cond-item cond-met"><span class="cond-icon">✅</span><div class="cond-body"><div class="cond-name">ゴールデンクロス（短期線 > 長期線）</div><div class="cond-detail">短期3,846 > 長期3,675（差 +4.66%）</div><div class="cond-dist">達成中</div></div></div><div class="cond-item cond-unmet"><span class="cond-icon">⬜</span><div class="cond-body"><div class="cond-name">RSI 50〜70</div><div class="cond-detail">RSI 36.7 < 下限50（あと13.3pt）</div><div class="cond-dist">あと13.3pt</div></div></div><div class="cond-item cond-met"><span class="cond-icon">✅</span><div class="cond-body"><div class="cond-name">長期線（75日）が上向き</div><div class="cond-detail">75日線 5日間変化: +1.885%（上向き）</div><div class="cond-dist">達成中</div></div></div><div class="cond-item cond-unmet"><span class="cond-icon">⬜</span><div class="cond-body"><div class="cond-name">終値が短期線（25日）の上</div><div class="cond-detail">終値3,304 < SMA25 3,846（-14.09%）</div><div class="cond-dist">あと14.09%上昇で達成</div></div></div><div class="cond-item cond-met"><span class="cond-icon">✅</span><div class="cond-body"><div class="cond-name">出来高 ≧ 20日平均</div><div class="cond-detail">当日2,843,400 / 平均1,624,640（175%）</div><div class="cond-dist">達成中</div></div></div></div>
+
+<h2>チャート分析（3か月）</h2>
+<div class="card">
+<svg viewBox="0 0 860 420" role="img" aria-label="4980 チャート">
+<line class="grid" x1="56" y1="230" x2="844" y2="230"/>
+<text class="tick" x="50" y="234" text-anchor="end">2,386</text>
+<line class="grid" x1="56" y1="176" x2="844" y2="176"/>
+<text class="tick" x="50" y="180" text-anchor="end">3,123</text>
+<line class="grid" x1="56" y1="121" x2="844" y2="121"/>
+<text class="tick" x="50" y="125" text-anchor="end">3,859</text>
+<line class="grid" x1="56" y1="66" x2="844" y2="66"/>
+<text class="tick" x="50" y="70" text-anchor="end">4,596</text>
+<line class="grid" x1="56" y1="12" x2="844" y2="12"/>
+<text class="tick" x="50" y="16" text-anchor="end">5,333</text>
+<polyline class="price-line" points="56.0,225.9 68.7,223.0 81.4,211.0 94.1,205.3 106.8,203.9 119.5,208.2 132.3,210.6 145.0,173.6 157.7,121.8 170.4,96.8 183.1,120.1 195.8,129.0 208.5,104.3 221.2,103.7 233.9,83.6 246.6,94.5 259.4,106.8 272.1,108.5 284.8,107.8 297.5,70.5 310.2,74.9 322.9,73.4 335.6,87.4 348.3,83.3 361.0,116.5 373.7,116.5 386.5,133.8 399.2,126.5 411.9,109.2 424.6,89.5 437.3,68.6 450.0,65.6 462.7,60.2 475.4,47.0 488.1,41.7 500.8,47.9 513.5,38.8 526.3,35.1 539.0,80.5 551.7,90.1 564.4,91.8 577.1,95.6 589.8,103.9 602.5,88.5 615.2,91.1 627.9,107.9 640.6,113.9 653.4,109.0 666.1,100.3 678.8,116.4 691.5,115.7 704.2,115.0 716.9,127.1 729.6,146.9 742.3,139.2 755.0,133.4 767.7,134.3 780.5,143.8 793.2,137.5 805.9,157.1 818.6,174.6 831.3,174.5 844.0,162.1"/>
+<polyline class="sma-short" points="56.0,234.2 68.7,233.4 81.4,232.2 94.1,230.4 106.8,228.6 119.5,227.2 132.3,225.7 145.0,222.8 157.7,217.9 170.4,212.1 183.1,207.7 195.8,203.5 208.5,198.4 221.2,193.1 233.9,187.3 246.6,181.8 259.4,177.0 272.1,172.3 284.8,167.6 297.5,161.4 310.2,155.4 322.9,149.1 335.6,143.6 348.3,138.1 361.0,133.8 373.7,129.4 386.5,125.8 399.2,122.4 411.9,118.6 424.6,114.0 437.3,108.4 450.0,102.6 462.7,98.1 475.4,95.1 488.1,92.9 500.8,90.0 513.5,86.4 526.3,83.7 539.0,82.7 551.7,83.0 564.4,82.9 577.1,82.4 589.8,82.2 602.5,81.5 615.2,82.3 627.9,83.6 640.6,85.2 653.4,86.1 666.1,86.8 678.8,86.8 691.5,86.7 704.2,86.0 716.9,86.0 729.6,87.5 742.3,89.5 755.0,92.1 767.7,94.9 780.5,98.2 793.2,101.8 805.9,106.4 818.6,111.5 831.3,116.9 844.0,122.0"/>
+<polyline class="sma-long" points="56.0,224.3 68.7,224.5 81.4,224.5 94.1,224.6 106.8,224.8 119.5,224.9 132.3,225.1 145.0,224.7 157.7,223.7 170.4,222.4 183.1,221.4 195.8,220.4 208.5,219.1 221.2,217.7 233.9,216.0 246.6,214.4 259.4,213.1 272.1,212.1 284.8,210.9 297.5,209.3 310.2,207.6 322.9,206.2 335.6,204.4 348.3,202.4 361.0,200.7 373.7,199.1 386.5,197.7 399.2,196.3 411.9,194.6 424.6,192.7 437.3,190.5 450.0,188.3 462.7,186.2 475.4,183.9 488.1,181.6 500.8,179.1 513.5,176.4 526.3,173.9 539.0,171.9 551.7,169.8 564.4,167.9 577.1,166.1 589.8,164.4 602.5,162.4 615.2,160.5 627.9,158.8 640.6,157.2 653.4,155.5 666.1,153.5 678.8,151.8 691.5,150.1 704.2,148.4 716.9,146.9 729.6,145.5 742.3,144.0 755.0,142.6 767.7,141.1 780.5,139.7 793.2,138.3 805.9,137.2 818.6,136.4 831.3,135.6 844.0,134.7"/>
+<line class="grid" x1="56" y1="281" x2="844" y2="281"/>
+<line class="grid" x1="56" y1="295" x2="844" y2="295"/>
+<line class="grid" x1="56" y1="309" x2="844" y2="309"/>
+<text class="tick" x="50" y="285" text-anchor="end">70</text>
+<text class="tick" x="50" y="299" text-anchor="end">50</text>
+<text class="tick" x="50" y="313" text-anchor="end">30</text>
+<rect class="rsi-zone" x="56" y="281" width="788" height="14"/>
+<polyline class="rsi-line" points="56.0,291.4 68.7,289.5 81.4,283.2 94.1,280.9 106.8,280.4 119.5,284.2 132.3,286.3 145.0,275.1 157.7,269.2 170.4,267.7 183.1,276.7 195.8,279.7 208.5,276.9 221.2,276.8 233.9,274.8 246.6,278.4 259.4,282.2 272.1,282.7 284.8,282.6 297.5,277.7 310.2,279.1 322.9,278.9 335.6,283.5 348.3,282.8 361.0,291.8 373.7,291.8 386.5,295.8 399.2,294.2 411.9,290.7 424.6,287.2 437.3,284.1 450.0,283.7 462.7,283.0 475.4,281.2 488.1,280.5 500.8,282.4 513.5,281.1 526.3,280.6 539.0,292.9 551.7,294.9 564.4,295.3 577.1,296.1 589.8,297.9 602.5,294.3 615.2,294.9 627.9,298.6 640.6,299.9 653.4,298.5 666.1,296.2 678.8,299.8 691.5,299.6 704.2,299.4 716.9,302.2 729.6,306.0 742.3,303.5 755.0,301.7 767.7,301.9 780.5,303.9 793.2,301.7 805.9,305.8 818.6,308.7 831.3,308.7 844.0,304.3"/>
+<rect class="vol-normal" x="51.6" y="394.8" width="8.8" height="5.2" rx="1"/>
+<rect class="vol-normal" x="64.3" y="396.3" width="8.8" height="3.7" rx="1"/>
+<rect class="vol-normal" x="77.0" y="390.3" width="8.8" height="9.7" rx="1"/>
+<rect class="vol-normal" x="89.8" y="392.0" width="8.8" height="8.0" rx="1"/>
+<rect class="vol-normal" x="102.5" y="390.2" width="8.8" height="9.8" rx="1"/>
+<rect class="vol-normal" x="115.2" y="393.1" width="8.8" height="6.9" rx="1"/>
+<rect class="vol-normal" x="127.9" y="390.6" width="8.8" height="9.4" rx="1"/>
+<rect class="vol-normal" x="140.6" y="397.3" width="8.8" height="2.7" rx="1"/>
+<rect class="vol-normal" x="153.3" y="394.9" width="8.8" height="5.1" rx="1"/>
+<rect class="vol-high" x="166.0" y="350.0" width="8.8" height="50.0" rx="1"/>
+<rect class="vol-high" x="178.7" y="374.0" width="8.8" height="26.0" rx="1"/>
+<rect class="vol-high" x="191.4" y="363.0" width="8.8" height="37.0" rx="1"/>
+<rect class="vol-high" x="204.1" y="379.2" width="8.8" height="20.8" rx="1"/>
+<rect class="vol-high" x="216.8" y="387.5" width="8.8" height="12.5" rx="1"/>
+<rect class="vol-high" x="229.6" y="388.7" width="8.8" height="11.3" rx="1"/>
+<rect class="vol-normal" x="242.3" y="390.8" width="8.8" height="9.2" rx="1"/>
+<rect class="vol-normal" x="255.0" y="389.8" width="8.8" height="10.2" rx="1"/>
+<rect class="vol-high" x="267.7" y="389.2" width="8.8" height="10.8" rx="1"/>
+<rect class="vol-normal" x="280.4" y="391.0" width="8.8" height="9.0" rx="1"/>
+<rect class="vol-high" x="293.1" y="382.9" width="8.8" height="17.1" rx="1"/>
+<rect class="vol-high" x="305.8" y="387.5" width="8.8" height="12.5" rx="1"/>
+<rect class="vol-high" x="318.5" y="382.7" width="8.8" height="17.3" rx="1"/>
+<rect class="vol-normal" x="331.2" y="392.5" width="8.8" height="7.5" rx="1"/>
+<rect class="vol-normal" x="343.9" y="392.3" width="8.8" height="7.7" rx="1"/>
+<rect class="vol-high" x="356.7" y="388.4" width="8.8" height="11.6" rx="1"/>
+<rect class="vol-high" x="369.4" y="386.8" width="8.8" height="13.2" rx="1"/>
+<rect class="vol-high" x="382.1" y="388.1" width="8.8" height="11.9" rx="1"/>
+<rect class="vol-high" x="394.8" y="389.5" width="8.8" height="10.5" rx="1"/>
+<rect class="vol-high" x="407.5" y="389.4" width="8.8" height="10.6" rx="1"/>
+<rect class="vol-normal" x="420.2" y="391.7" width="8.8" height="8.3" rx="1"/>
+<rect class="vol-high" x="432.9" y="388.4" width="8.8" height="11.6" rx="1"/>
+<rect class="vol-normal" x="445.6" y="390.1" width="8.8" height="9.9" rx="1"/>
+<rect class="vol-normal" x="458.3" y="392.5" width="8.8" height="7.5" rx="1"/>
+<rect class="vol-high" x="471.0" y="386.1" width="8.8" height="13.9" rx="1"/>
+<rect class="vol-normal" x="483.8" y="392.0" width="8.8" height="8.0" rx="1"/>
+<rect class="vol-normal" x="496.5" y="390.5" width="8.8" height="9.5" rx="1"/>
+<rect class="vol-high" x="509.2" y="386.3" width="8.8" height="13.7" rx="1"/>
+<rect class="vol-high" x="521.9" y="389.5" width="8.8" height="10.5" rx="1"/>
+<rect class="vol-high" x="534.6" y="381.5" width="8.8" height="18.5" rx="1"/>
+<rect class="vol-high" x="547.3" y="388.7" width="8.8" height="11.3" rx="1"/>
+<rect class="vol-high" x="560.0" y="388.5" width="8.8" height="11.5" rx="1"/>
+<rect class="vol-normal" x="572.7" y="390.9" width="8.8" height="9.1" rx="1"/>
+<rect class="vol-normal" x="585.4" y="392.3" width="8.8" height="7.7" rx="1"/>
+<rect class="vol-normal" x="598.1" y="390.2" width="8.8" height="9.8" rx="1"/>
+<rect class="vol-normal" x="610.8" y="392.0" width="8.8" height="8.0" rx="1"/>
+<rect class="vol-normal" x="623.6" y="392.0" width="8.8" height="8.0" rx="1"/>
+<rect class="vol-normal" x="636.3" y="393.2" width="8.8" height="6.8" rx="1"/>
+<rect class="vol-normal" x="649.0" y="394.9" width="8.8" height="5.1" rx="1"/>
+<rect class="vol-normal" x="661.7" y="393.3" width="8.8" height="6.7" rx="1"/>
+<rect class="vol-normal" x="674.4" y="395.7" width="8.8" height="4.3" rx="1"/>
+<rect class="vol-normal" x="687.1" y="395.9" width="8.8" height="4.1" rx="1"/>
+<rect class="vol-normal" x="699.8" y="395.9" width="8.8" height="4.1" rx="1"/>
+<rect class="vol-normal" x="712.5" y="396.1" width="8.8" height="3.9" rx="1"/>
+<rect class="vol-normal" x="725.2" y="389.7" width="8.8" height="10.3" rx="1"/>
+<rect class="vol-normal" x="737.9" y="394.2" width="8.8" height="5.8" rx="1"/>
+<rect class="vol-normal" x="750.7" y="394.7" width="8.8" height="5.3" rx="1"/>
+<rect class="vol-normal" x="763.4" y="395.6" width="8.8" height="4.4" rx="1"/>
+<rect class="vol-normal" x="776.1" y="395.4" width="8.8" height="4.6" rx="1"/>
+<rect class="vol-normal" x="788.8" y="394.8" width="8.8" height="5.2" rx="1"/>
+<rect class="vol-normal" x="801.5" y="393.9" width="8.8" height="6.1" rx="1"/>
+<rect class="vol-normal" x="814.2" y="391.2" width="8.8" height="8.8" rx="1"/>
+<rect class="vol-normal" x="826.9" y="391.1" width="8.8" height="8.9" rx="1"/>
+<rect class="vol-high" x="839.6" y="388.5" width="8.8" height="11.5" rx="1"/>
+<text class="tick" x="56.0" y="418" text-anchor="middle">04/30</text>
+<text class="tick" x="450.0" y="418" text-anchor="middle">06/17</text>
+<text class="tick" x="844.0" y="418" text-anchor="middle">07/31</text>
+<text class="section-label" x="844" y="24" text-anchor="end">株価</text>
+<text class="section-label" x="844" y="272" text-anchor="end">RSI</text>
+<text class="section-label" x="844" y="362" text-anchor="end">出来高</text>
+</svg>
+<div class="legend">
+<span><span class="dot-price"></span>株価</span>
+<span><span class="dot-sma25"></span>SMA25</span>
+<span><span class="dot-sma75"></span>SMA75</span>
+<span><span class="dot-rsi"></span>RSI</span>
+</div>
+</div>
+
+<h2>トレンド分析</h2>
+<div class="card"><ul class="analysis-list"><li>短期線は長期線の上だが、株価が短期線を割り込んでいる。調整局面の可能性。</li><li>RSI 37はニュートラル。方向感が出るまで待ち。</li><li>出来高が20日平均の1.8倍と活発。注目度が高い。</li><li>5条件中3条件達成。シグナル圏に接近中。</li></ul></div>
+
+<h2>マルチタイムフレーム分析</h2>
+<div class="card mtf-card mtf-strong">
+<div class="mtf-grid">
+  <div class="mtf-row"><span class="mtf-label">日足トレンド</span><span class="mtf-val">📈 上昇</span></div>
+  <div class="mtf-row"><span class="mtf-label">週足トレンド</span><span class="mtf-val">📈 上昇</span></div>
+  <div class="mtf-row"><span class="mtf-label">週足RSI</span><span class="mtf-val">59</span></div>
+  <div class="mtf-row"><span class="mtf-label">週足SMA25/75</span><span class="mtf-val">3,174 / —</span></div>
+</div>
+<div class="mtf-judge">✅ 日足・週足ともに上昇 — 強い買い環境</div>
+</div>
+
+<div class="foot">更新 2026-08-03 08:05 ｜ 過去実績に基づく確率は将来を保証しません</div>
+</div>
+</body>
+</html>
